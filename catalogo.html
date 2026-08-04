@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Consulta el catálogo de muebles, electrodomésticos, colchones y artículos para el hogar de Ocasiones Calpe." />
+  <meta name="theme-color" content="#ffe500" />
+  <title>Catálogo | Ocasiones Calpe</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body data-page="catalogo">
+  <div class="announcement">
+    <div class="container announcement__inner">
+      <span>Stock en constante renovación</span>
+      <span class="announcement__dot">•</span>
+      <span>Consulta disponibilidad antes de desplazarte</span>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Ir al inicio de Ocasiones Calpe">
+        <img class="brand__logo" src="assets/logo-ocasiones-calpe.jpg" alt="Logo de Ocasiones Calpe" />
+        <span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-menu" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="main-nav" id="main-menu" aria-label="Navegación principal"><a href="index.html">Inicio</a><a class="active" href="catalogo.html" aria-current="page">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">La tienda</a><a class="nav-cta" href="contacto.html">Contactar</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero page-hero--catalog">
+      <div class="container page-hero__grid"><div><span class="eyebrow">Catálogo Ocasiones Calpe</span><h1>Encuentra tu próxima oportunidad.</h1><p>Filtra por categoría, consulta la ficha de cada producto y pregúntanos por su disponibilidad.</p></div><div class="page-hero__stamp"><strong>STOCK</strong><span>EN ROTACIÓN</span></div></div>
+    </section>
+    <section class="section section--soft catalog-page">
+      <div class="container">
+        <div class="catalog-toolbar reveal">
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Buscar sofá, lavadora, colchón…" aria-label="Buscar en el catálogo" /></label>
+          <div class="filter-row" role="group" aria-label="Filtrar catálogo por categoría">
+            <button class="filter-btn active" data-filter="todos">Todos</button><button class="filter-btn" data-filter="muebles">Muebles</button><button class="filter-btn" data-filter="electrodomesticos">Electrodomésticos</button><button class="filter-btn" data-filter="descanso">Descanso</button><button class="filter-btn" data-filter="jardin">Jardín</button>
+          </div>
+        </div>
+        <div class="catalog-grid" id="catalog-grid"></div>
+        <div class="catalog-empty" id="catalog-empty" hidden><strong>No hemos encontrado productos con esos criterios.</strong><span>Prueba otra búsqueda o consúltanos por WhatsApp.</span></div>
+        <div class="catalog-note reveal"><div><strong>¿Buscas algo concreto?</strong><span>El stock cambia con frecuencia y puede haber productos que todavía no aparecen en la web.</span></div><a class="btn btn--dark js-whatsapp" href="#" data-message="Hola, estoy buscando un producto concreto. ¿Podéis ayudarme?">Preguntar disponibilidad</a></div>
+        <p class="demo-note">Los productos mostrados son ejemplos de catálogo. Sustitúyelos por el stock real desde el archivo <strong>products.js</strong>.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand brand--footer" href="index.html">
+          <img class="brand__logo" src="assets/logo-ocasiones-calpe.jpg" alt="Logo de Ocasiones Calpe" />
+          <span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+        </a>
+        <p>Muebles, electrodomésticos, descanso y oportunidades para tu hogar.</p>
+      </div>
+      <div><strong>Explorar</strong><a href="catalogo.html">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">La tienda</a></div>
+      <div><strong>Contacto</strong><a href="tel:+34607226579">607 226 579</a><a href="contacto.html">Formulario de contacto</a><a href="https://www.facebook.com/ocasionescalpe/?locale=es_ES" target="_blank" rel="noopener noreferrer">Facebook</a></div>
+      <div><strong>Ubicación</strong><span>Av. Valencia, 3</span><span>03710 Calpe, Alicante</span></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> Ocasiones Calpe</span><span>Diseño web a medida</span></div>
+  </footer>
+  <a class="whatsapp-float js-whatsapp" href="#" aria-label="Contactar por WhatsApp" data-message="Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta."><span>WhatsApp</span></a>
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

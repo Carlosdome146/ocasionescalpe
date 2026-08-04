@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contacta con Ocasiones Calpe por teléfono, WhatsApp, Facebook o mediante el formulario de consulta." />
+  <meta name="theme-color" content="#ffe500" />
+  <title>Contacto | Ocasiones Calpe</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body data-page="contacto">
+  <div class="announcement">
+    <div class="container announcement__inner">
+      <span>Stock en constante renovación</span>
+      <span class="announcement__dot">•</span>
+      <span>Consulta disponibilidad antes de desplazarte</span>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Ir al inicio de Ocasiones Calpe">
+        <img class="brand__logo" src="assets/logo-ocasiones-calpe.jpg" alt="Logo de Ocasiones Calpe" />
+        <span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-menu" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="main-nav" id="main-menu" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">La tienda</a><a class="nav-cta active" href="contacto.html" aria-current="page">Contactar</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero__grid"><div><span class="eyebrow">Contacto</span><h1>Cuéntanos qué estás buscando.</h1><p>La consulta se prepara y se envía directamente a la tienda mediante WhatsApp.</p></div><div class="page-hero__stamp"><strong>HABLEMOS</strong><span>607 226 579</span></div></div>
+    </section>
+    <section class="section contact-page">
+      <div class="container contact__grid">
+        <div class="contact__info reveal"><span class="eyebrow">Datos de contacto</span><h2>Estamos para ayudarte.</h2><p>Confirma siempre la disponibilidad del producto antes de desplazarte.</p>
+          <div class="contact-cards">
+            <a href="tel:+34607226579"><span>Teléfono / WhatsApp</span><strong>607 226 579</strong></a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Valencia+3+Calpe" target="_blank" rel="noopener noreferrer"><span>Visítanos</span><strong>Av. Valencia, 3 · Calpe</strong></a>
+            <a href="https://www.facebook.com/ocasionescalpe/?locale=es_ES" target="_blank" rel="noopener noreferrer"><span>Redes sociales</span><strong>Facebook · Ocasiones Calpe</strong></a>
+          </div>
+          <div class="contact-tip"><strong>Consejo</strong><p>Para consultar un producto, indica su nombre o adjunta una captura cuando se abra WhatsApp.</p></div>
+        </div>
+        <form class="contact-form reveal reveal--delay" id="contact-form">
+          <div class="form-row"><label>Nombre<input name="name" type="text" placeholder="Tu nombre" required /></label><label>Teléfono<input name="phone" type="tel" placeholder="Tu teléfono" required /></label></div>
+          <label>¿Qué estás buscando?<select name="interest" required><option value="">Selecciona una opción</option><option>Muebles</option><option>Electrodomésticos</option><option>Colchones y descanso</option><option>Jardín y terraza</option><option>Servicio de montaje</option><option>Otro producto</option></select></label>
+          <label>Mensaje<textarea name="message" rows="6" placeholder="Cuéntanos qué necesitas, medidas aproximadas, presupuesto…" required></textarea></label>
+          <label class="consent"><input type="checkbox" required /><span>Acepto que mis datos se utilicen para responder a esta consulta.</span></label>
+          <button class="btn btn--primary btn--full" type="submit">Enviar consulta por WhatsApp</button>
+          <small class="form-help">No se realiza ningún pago desde esta web. La disponibilidad se confirma directamente con la tienda.</small>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand brand--footer" href="index.html">
+          <img class="brand__logo" src="assets/logo-ocasiones-calpe.jpg" alt="Logo de Ocasiones Calpe" />
+          <span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+        </a>
+        <p>Muebles, electrodomésticos, descanso y oportunidades para tu hogar.</p>
+      </div>
+      <div><strong>Explorar</strong><a href="catalogo.html">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">La tienda</a></div>
+      <div><strong>Contacto</strong><a href="tel:+34607226579">607 226 579</a><a href="contacto.html">Formulario de contacto</a><a href="https://www.facebook.com/ocasionescalpe/?locale=es_ES" target="_blank" rel="noopener noreferrer">Facebook</a></div>
+      <div><strong>Ubicación</strong><span>Av. Valencia, 3</span><span>03710 Calpe, Alicante</span></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> Ocasiones Calpe</span><span>Diseño web a medida</span></div>
+  </footer>
+  <a class="whatsapp-float js-whatsapp" href="#" aria-label="Contactar por WhatsApp" data-message="Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta."><span>WhatsApp</span></a>
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
