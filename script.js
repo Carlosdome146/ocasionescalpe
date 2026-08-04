@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "34607226579";
+const WHATSAPP_NUMBER = "34609377974";
 const products = Array.isArray(window.OC_PRODUCTS) ? window.OC_PRODUCTS : [];
 
 function statusClass(mounting) {
