@@ -1,104 +1,134 @@
 window.OC_PRODUCTS = [
   {
     "id": 1,
+    "reference": "OC-SM-001",
+    "type": "segunda-mano",
+    "typeLabel": "Segunda mano",
+    "status": "available",
     "name": "Sofá chaise longue",
     "category": "muebles",
     "categoryLabel": "Muebles",
     "image": "assets/product-sofa.svg",
     "price": "Consultar",
-    "condition": "Estado a confirmar",
+    "condition": "Buen estado",
     "mounting": "optional",
     "mountingLabel": "Montaje opcional",
-    "description": "Sofá de gran capacidad, ideal para salones familiares y zonas de descanso.",
+    "description": "Sofá de gran capacidad, ideal para salones familiares y zonas de descanso. Unidad de exposición DEMO de segunda mano.",
     "details": {
       "Medidas": "Consultar",
       "Color": "Gris neutro",
-      "Disponibilidad": "Confirmación en tienda"
+      "Estado": "Buen estado"
     }
   },
   {
     "id": 2,
+    "reference": "OC-SM-002",
+    "type": "segunda-mano",
+    "typeLabel": "Segunda mano",
+    "status": "available",
     "name": "Lavadora de carga frontal",
     "category": "electrodomesticos",
     "categoryLabel": "Electrodomésticos",
     "image": "assets/product-washer.svg",
     "price": "Consultar",
-    "condition": "Revisión disponible",
+    "condition": "Unidad revisada",
     "mounting": "none",
     "mountingLabel": "No requiere montaje",
-    "description": "Solución práctica para renovar la zona de lavado con una opción de oportunidad.",
+    "description": "Lavadora revisada y lista para una segunda vida. Unidad DEMO sin reposición una vez vendida.",
     "details": {
       "Capacidad": "Consultar",
-      "Garantía": "Según unidad",
-      "Disponibilidad": "Confirmación en tienda"
+      "Revisión": "Realizada",
+      "Estado": "Buen estado"
     }
   },
   {
     "id": 3,
+    "reference": "OC-N-001",
+    "type": "nuevo",
+    "typeLabel": "Producto nuevo",
+    "status": "available",
+    "stock": 6,
+    "replenishment": true,
     "name": "Colchón viscoelástico",
     "category": "descanso",
     "categoryLabel": "Descanso",
     "image": "assets/product-mattress.svg",
     "price": "Consultar",
-    "condition": "Varias medidas",
+    "condition": "Producto nuevo",
     "mounting": "none",
     "mountingLabel": "No requiere montaje",
-    "description": "Confort y soporte para mejorar el descanso. Consulta medidas y unidades disponibles.",
+    "description": "Colchón nuevo con distintas medidas disponibles. Producto DEMO con reposición de stock.",
     "details": {
-      "Medidas": "Según stock",
+      "Medidas": "Varias medidas",
       "Firmeza": "Consultar",
-      "Disponibilidad": "Confirmación en tienda"
+      "Reposición": "Disponible"
     }
   },
   {
     "id": 4,
+    "reference": "OC-N-002",
+    "type": "nuevo",
+    "typeLabel": "Producto nuevo",
+    "status": "available",
+    "stock": 2,
+    "replenishment": true,
     "name": "Mesa de comedor con sillas",
     "category": "muebles",
     "categoryLabel": "Muebles",
     "image": "assets/product-dining.svg",
     "price": "Consultar",
-    "condition": "Conjunto completo",
+    "condition": "Producto nuevo",
     "mounting": "included",
     "mountingLabel": "Montaje incluido",
-    "description": "Conjunto de comedor funcional para crear un espacio cómodo y acogedor.",
+    "description": "Conjunto de comedor nuevo y funcional. Producto DEMO con pocas unidades en tienda y posibilidad de reposición.",
     "details": {
       "Incluye": "Mesa y sillas",
-      "Acabado": "Según unidad",
-      "Disponibilidad": "Confirmación en tienda"
+      "Acabado": "Según modelo",
+      "Reposición": "Disponible"
     }
   },
   {
     "id": 5,
+    "reference": "OC-N-003",
+    "type": "nuevo",
+    "typeLabel": "Producto nuevo",
+    "status": "available",
+    "stock": 0,
+    "replenishment": true,
     "name": "Frigorífico combi",
     "category": "electrodomesticos",
     "categoryLabel": "Electrodomésticos",
     "image": "assets/product-fridge.svg",
     "price": "Consultar",
-    "condition": "Unidad revisada",
+    "condition": "Producto nuevo",
     "mounting": "none",
     "mountingLabel": "No requiere montaje",
-    "description": "Frigorífico con zona de refrigeración y congelador para el uso diario del hogar.",
+    "description": "Frigorífico combi nuevo. Producto DEMO actualmente sin unidades en tienda, disponible bajo pedido.",
     "details": {
       "Altura": "Consultar",
       "Acabado": "Blanco / inoxidable",
-      "Disponibilidad": "Confirmación en tienda"
+      "Reposición": "Bajo pedido"
     }
   },
   {
     "id": 6,
+    "reference": "OC-SM-003",
+    "type": "segunda-mano",
+    "typeLabel": "Segunda mano",
+    "status": "available",
     "name": "Conjunto para terraza",
     "category": "jardin",
     "categoryLabel": "Jardín y terraza",
     "image": "assets/product-garden.svg",
     "price": "Consultar",
-    "condition": "Stock estacional",
+    "condition": "Buen estado",
     "mounting": "optional",
     "mountingLabel": "Montaje opcional",
-    "description": "Mobiliario exterior pensado para balcones, patios y terrazas de distintos tamaños.",
+    "description": "Conjunto de exterior DEMO de segunda mano para balcón, patio o terraza. Pieza única sin reposición.",
     "details": {
       "Piezas": "Según conjunto",
       "Material": "Consultar",
-      "Disponibilidad": "Confirmación en tienda"
+      "Estado": "Buen estado"
     }
   }
 ];

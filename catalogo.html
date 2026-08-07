@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Consulta el catálogo de muebles, electrodomésticos, colchones y artículos para el hogar de Ocasiones Calpe." />
+  <meta name="description" content="Consulta el catálogo de productos nuevos y de segunda mano de Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar." />
   <meta name="theme-color" content="#ffe500" />
   <title>Catálogo | Ocasiones Calpe</title>
   <link rel="stylesheet" href="styles.css" />
@@ -12,7 +12,7 @@
 <body data-page="catalogo">
   <div class="announcement">
     <div class="container announcement__inner">
-      <span>Stock en constante renovación</span>
+      <span>Productos nuevos y de segunda mano</span>
       <span class="announcement__dot">•</span>
       <span>Consulta disponibilidad antes de desplazarte</span>
     </div>
@@ -29,19 +29,49 @@
   </header>
   <main>
     <section class="page-hero page-hero--catalog">
-      <div class="container page-hero__grid"><div><span class="eyebrow">Catálogo Ocasiones Calpe</span><h1>Encuentra tu próxima oportunidad.</h1><p>Filtra por categoría, consulta la ficha de cada producto y pregúntanos por su disponibilidad.</p></div><div class="page-hero__stamp"><strong>STOCK</strong><span>EN ROTACIÓN</span></div></div>
+      <div class="container page-hero__grid">
+        <div>
+          <span class="eyebrow">Catálogo Ocasiones Calpe</span>
+          <h1>Nuevos y segunda mano.</h1>
+          <p>Encuentra productos nuevos con reposición y oportunidades únicas de segunda mano. Consulta la ficha y habla directamente con la tienda por WhatsApp.</p>
+        </div>
+        <div class="page-hero__stamp"><strong>STOCK</strong><span>NUEVO + OCASIÓN</span></div>
+      </div>
     </section>
+
     <section class="section section--soft catalog-page">
       <div class="container">
+        <div class="catalog-type-switch reveal" role="group" aria-label="Filtrar catálogo por tipo de producto">
+          <button class="type-filter-btn active" data-type="todos">
+            <strong>Todo el catálogo</strong>
+            <span>Nuevos y segunda mano</span>
+          </button>
+          <button class="type-filter-btn" data-type="nuevo">
+            <strong>Productos nuevos</strong>
+            <span>Stock en tienda y reposición</span>
+          </button>
+          <button class="type-filter-btn" data-type="segunda-mano">
+            <strong>Segunda mano</strong>
+            <span>Piezas únicas sin reposición</span>
+          </button>
+        </div>
+
         <div class="catalog-toolbar reveal">
           <label class="search-box"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Buscar sofá, lavadora, colchón…" aria-label="Buscar en el catálogo" /></label>
           <div class="filter-row" role="group" aria-label="Filtrar catálogo por categoría">
             <button class="filter-btn active" data-filter="todos">Todos</button><button class="filter-btn" data-filter="muebles">Muebles</button><button class="filter-btn" data-filter="electrodomesticos">Electrodomésticos</button><button class="filter-btn" data-filter="descanso">Descanso</button><button class="filter-btn" data-filter="jardin">Jardín</button>
           </div>
         </div>
+
+        <div class="catalog-legend reveal" aria-label="Información sobre disponibilidad">
+          <span><b class="legend-mark legend-mark--new"></b><strong>Nuevo:</strong> mostramos las unidades disponibles en tienda y puede haber reposición.</span>
+          <span><b class="legend-mark legend-mark--used"></b><strong>Segunda mano:</strong> cada artículo es una pieza única y no tiene reposición.</span>
+        </div>
+
         <div class="catalog-grid" id="catalog-grid"></div>
         <div class="catalog-empty" id="catalog-empty" hidden><strong>No hemos encontrado productos con esos criterios.</strong><span>Prueba otra búsqueda o consúltanos por WhatsApp.</span></div>
-        <div class="catalog-note reveal"><div><strong>¿Buscas algo concreto?</strong><span>El stock cambia con frecuencia y puede haber productos que todavía no aparecen en la web.</span></div><a class="btn btn--dark js-whatsapp" href="#" data-message="Hola, estoy buscando un producto concreto. ¿Podéis ayudarme?">Preguntar disponibilidad</a></div>
+        <div class="catalog-note reveal"><div><strong>¿Buscas algo concreto?</strong><span>El catálogo cambia con frecuencia y puede haber productos que todavía no aparecen en la web.</span></div><a class="btn btn--dark js-whatsapp" href="#" data-message="Hola, estoy buscando un producto concreto. ¿Podéis ayudarme?">Preguntar disponibilidad</a></div>
+        <p class="demo-note">Los productos mostrados son ejemplos de catálogo. Mañana se sustituirán por el stock real manteniendo esta misma estructura.</p>
       </div>
     </section>
   </main>
