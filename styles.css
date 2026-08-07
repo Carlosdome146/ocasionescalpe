@@ -229,6 +229,14 @@ h2 { margin: 0; font-size: clamp(36px, 4vw, 55px); line-height: 1.02; }
 .footer-grid > div > strong { margin-bottom: 8px; color: var(--yellow); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
 .footer-grid p, .footer-grid a, .footer-grid span { color: #cfcfcf; font-size: 12px; }
 .footer-grid a:hover { color: var(--yellow); }
+
+.footer-social { margin-top: 34px; padding-top: 24px; display: flex; align-items: center; justify-content: center; gap: 18px; border-top: 1px solid #333; }
+.footer-social__label { color: var(--yellow); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .13em; }
+.footer-social__links { display: flex; align-items: center; gap: 10px; }
+.social-link { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: var(--yellow); color: var(--black); border: 2px solid var(--yellow); box-shadow: 4px 4px 0 #222; transition: transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease; }
+.social-link svg { width: 22px; height: 22px; fill: currentColor; }
+.social-link:hover, .social-link:focus-visible { background: var(--white); color: var(--black); transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--yellow); outline: none; }
+.social-link:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 #222; }
 .footer-bottom { margin-top: 40px; padding-top: 18px; display: flex; justify-content: space-between; border-top: 1px solid #333; color: #888; font-size: 10px; text-transform: uppercase; }
 .whatsapp-float { position: fixed; right: 22px; bottom: 22px; z-index: 90; min-height: 50px; display: flex; align-items: center; padding: 0 16px; border: 3px solid var(--black); background: var(--yellow); color: var(--black); box-shadow: 5px 5px 0 var(--black); font-size: 12px; font-weight: 900; text-transform: uppercase; }
 .whatsapp-float::before { content: "●"; margin-right: 8px; color: #18844c; }
@@ -372,4 +380,24 @@ h2 { margin: 0; font-size: clamp(36px, 4vw, 55px); line-height: 1.02; }
   .product-availability-panel { grid-template-columns: 58px 1fr; gap: 12px; padding: 14px; }
   .product-availability-panel__count { width: 58px; height: 58px; }
   .stock-number, .stock-unique { font-size: 28px; }
+}
+
+@media (max-width: 560px) {
+  .footer-social { flex-direction: column; gap: 12px; text-align: center; }
+  .social-link { width: 42px; height: 42px; }
+}
+
+/* Selector de idioma */
+.language-switcher { display: inline-flex; align-items: center; gap: 0; border: 2px solid var(--black); background: var(--white); box-shadow: 3px 3px 0 rgba(0,0,0,.14); }
+.language-btn { min-width: 31px; height: 30px; padding: 0 7px; border: 0; border-right: 1px solid var(--black); background: var(--white); color: var(--black); font-size: 10px; font-weight: 900; line-height: 1; letter-spacing: .04em; transition: background .16s ease, color .16s ease; }
+.language-btn:last-child { border-right: 0; }
+.language-btn:hover, .language-btn:focus-visible { background: var(--yellow); outline: none; }
+.language-btn.active { background: var(--black); color: var(--yellow); }
+
+@media (max-width: 1020px) {
+  .language-btn { min-width: 28px; padding-inline: 5px; }
+}
+@media (max-width: 850px) {
+  .main-nav .language-switcher { align-self: flex-start; margin: 10px 0 12px; }
+  .language-btn { min-width: 38px; height: 34px; }
 }

@@ -1,5 +1,11 @@
 const WHATSAPP_NUMBER = "34609377974";
 const products = Array.isArray(window.OC_PRODUCTS) ? window.OC_PRODUCTS : [];
+const I18N = window.OC_I18N || {
+  getLanguage: () => "es",
+  t: value => value,
+  m: key => key,
+  localizeProduct: product => product
+};
 
 function statusClass(mounting) {
   return mounting === "included" ? "status--included" : mounting === "optional" ? "status--optional" : "status--none";
@@ -17,13 +23,17 @@ function typeClass(product) {
   return product.type === "nuevo" ? "product-type--new" : "product-type--used";
 }
 
+function localized(product) {
+  return I18N.localizeProduct(product);
+}
+
 function stockInfo(product) {
   if (product.type !== "nuevo") {
     return {
       className: "availability--used",
-      label: "Disponible",
-      detail: "Pieza única · sin reposición",
-      detailLong: "Esta unidad es de segunda mano y no tiene reposición. Consulta disponibilidad antes de desplazarte."
+      label: I18N.m("usedLabel"),
+      detail: I18N.m("usedDetail"),
+      detailLong: I18N.m("usedLong")
     };
   }
 
@@ -32,87 +42,84 @@ function stockInfo(product) {
   if (stock <= 0) {
     return {
       className: "availability--order",
-      label: product.replenishment ? "Disponible bajo pedido" : "Sin stock",
-      detail: product.replenishment ? "Reposición disponible" : "Consultar disponibilidad",
-      detailLong: product.replenishment
-        ? "Actualmente no hay unidades en tienda, pero este producto se puede volver a pedir. Consulta el plazo de reposición."
-        : "Actualmente no hay unidades disponibles. Consulta con la tienda para más información."
+      label: product.replenishment ? I18N.m("orderLabel") : I18N.m("noStockLabel"),
+      detail: product.replenishment ? I18N.m("replenishDetail") : I18N.m("checkDetail"),
+      detailLong: product.replenishment ? I18N.m("replenishLong") : I18N.m("noStockLong")
     };
   }
 
   if (stock === 1) {
     return {
       className: "availability--low",
-      label: "Última unidad en tienda",
-      detail: "1 unidad disponible",
-      detailLong: product.replenishment
-        ? "Queda 1 unidad en tienda. Si se agota, podemos consultar su reposición."
-        : "Queda 1 unidad disponible en tienda."
+      label: I18N.m("lastUnit"),
+      detail: I18N.m("oneAvailable"),
+      detailLong: product.replenishment ? I18N.m("oneReplenishLong") : I18N.m("oneLong")
     };
   }
 
   if (stock === 2) {
     return {
       className: "availability--low",
-      label: "Últimas unidades",
-      detail: "2 unidades disponibles",
-      detailLong: product.replenishment
-        ? "Quedan 2 unidades en tienda. Si se agotan, podemos consultar su reposición."
-        : "Quedan 2 unidades disponibles en tienda."
+      label: I18N.m("lastUnits"),
+      detail: I18N.m("twoAvailable"),
+      detailLong: product.replenishment ? I18N.m("twoReplenishLong") : I18N.m("twoLong")
     };
   }
 
   return {
     className: "availability--stock",
-    label: "En stock",
-    detail: `${stock} unidades disponibles`,
+    label: I18N.m("inStock"),
+    detail: I18N.m("unitsAvailable", { count: stock }),
     detailLong: product.replenishment
-      ? `${stock} unidades disponibles actualmente en tienda. Este producto admite reposición.`
-      : `${stock} unidades disponibles actualmente en tienda.`
+      ? I18N.m("unitsReplenishLong", { count: stock })
+      : I18N.m("unitsLong", { count: stock })
   };
 }
 
-function productWhatsappMessage(product) {
-  const availability = stockInfo(product);
+function productWhatsappMessage(baseProduct) {
+  const product = localized(baseProduct);
+  const availability = stockInfo(baseProduct);
   const lines = [
-    "Hola, estoy interesado/a en un producto de Ocasiones Calpe:",
+    I18N.m("productWhatsappIntro"),
     "",
-    `Producto: ${product.name}`,
-    `Referencia: ${product.reference || `OC-${product.id}`}`,
-    `Tipo: ${product.typeLabel || (product.type === "nuevo" ? "Producto nuevo" : "Segunda mano")}`,
-    `Precio anunciado: ${product.price}`
+    `${I18N.m("productLabel")}: ${product.name}`,
+    `${I18N.m("reference")}: ${baseProduct.reference || `OC-${baseProduct.id}`}`,
+    `${I18N.m("typeLabel")}: ${product.typeLabel || (baseProduct.type === "nuevo" ? I18N.t("Productos nuevos") : I18N.t("Segunda mano"))}`,
+    `${I18N.m("announcedPrice")}: ${product.price}`
   ];
 
-  if (product.type === "nuevo") {
-    lines.push(`Disponibilidad: ${availability.label}${Number(product.stock) > 0 ? ` (${availability.detail})` : ""}`);
+  if (baseProduct.type === "nuevo") {
+    lines.push(`${I18N.m("availabilityLabel")}: ${availability.label}${Number(baseProduct.stock) > 0 ? ` (${availability.detail})` : ""}`);
   } else {
-    lines.push("Disponibilidad: pieza única de segunda mano");
+    lines.push(`${I18N.m("availabilityLabel")}: ${I18N.m("usedWhatsappAvailability")}`);
   }
 
-  lines.push("", "¿Podéis darme más información y confirmarme la disponibilidad?");
+  lines.push("", I18N.m("productWhatsappEnd"));
   return lines.join("\n");
 }
 
-function productCard(product) {
-  const availability = stockInfo(product);
+function productCard(baseProduct) {
+  const product = localized(baseProduct);
+  const availability = stockInfo(baseProduct);
+  const reference = baseProduct.reference || `OC-${baseProduct.id}`;
   return `
     <article class="product-card reveal is-visible">
-      <a class="product-card__image" href="producto.html?id=${product.id}" aria-label="Ver ficha de ${product.name}">
-        <img src="${product.image}" alt="${product.name}" loading="lazy" />
+      <a class="product-card__image" href="producto.html?id=${baseProduct.id}" aria-label="${I18N.m("viewProduct", { name: product.name })}">
+        <img src="${baseProduct.image}" alt="${product.name}" loading="lazy" />
         <div class="product-card__badges">
           <span class="product-card__tag">${product.categoryLabel}</span>
-          <span class="product-type ${typeClass(product)}">${product.typeLabel}</span>
+          <span class="product-type ${typeClass(baseProduct)}">${product.typeLabel}</span>
         </div>
       </a>
       <div class="product-card__body">
-        <div class="product-card__meta"><span>${product.condition}</span><span class="status ${statusClass(product.mounting)}">${product.mountingLabel}</span></div>
-        <h3><a href="producto.html?id=${product.id}">${product.name}</a></h3>
+        <div class="product-card__meta"><span>${product.condition}</span><span class="status ${statusClass(baseProduct.mounting)}">${product.mountingLabel}</span></div>
+        <h3><a href="producto.html?id=${baseProduct.id}">${product.name}</a></h3>
         <p class="product-card__description">${product.description}</p>
         <div class="product-card__availability ${availability.className}">
           <strong>${availability.label}</strong>
           <span>${availability.detail}</span>
         </div>
-        <div class="product-card__footer"><div class="product-card__price"><small>Precio</small><strong>${product.price}</strong></div><a class="product-card__button" href="producto.html?id=${product.id}">Ver ficha</a></div>
+        <div class="product-card__footer"><div class="product-card__price"><small>${I18N.m("price")}</small><strong>${product.price}</strong></div><a class="product-card__button" href="producto.html?id=${baseProduct.id}">${I18N.m("viewDetail")}</a></div>
       </div>
     </article>`;
 }
@@ -141,11 +148,13 @@ function setupCatalog() {
   }
 
   function render() {
-    const term = (search?.value || "").trim().toLocaleLowerCase("es");
-    const filtered = products.filter(isVisibleProduct).filter(product => {
-      const categoryMatch = activeFilter === "todos" || product.category === activeFilter;
-      const typeMatch = activeType === "todos" || product.type === activeType;
-      const text = `${product.name} ${product.reference || ""} ${product.categoryLabel} ${product.typeLabel || ""} ${product.description}`.toLocaleLowerCase("es");
+    const locale = I18N.getLanguage() === "de" ? "de" : I18N.getLanguage();
+    const term = (search?.value || "").trim().toLocaleLowerCase(locale);
+    const filtered = products.filter(isVisibleProduct).filter(baseProduct => {
+      const product = localized(baseProduct);
+      const categoryMatch = activeFilter === "todos" || baseProduct.category === activeFilter;
+      const typeMatch = activeType === "todos" || baseProduct.type === activeType;
+      const text = `${product.name} ${baseProduct.reference || ""} ${product.categoryLabel} ${product.typeLabel || ""} ${product.description}`.toLocaleLowerCase(locale);
       return categoryMatch && typeMatch && text.includes(term);
     });
 
@@ -168,13 +177,16 @@ function setupCatalog() {
   }));
 
   search?.addEventListener("input", render);
+  document.addEventListener("oc:languagechange", render);
   render();
 }
 
 function setupFeatured() {
   const grid = document.getElementById("featured-grid");
   if (!grid) return;
-  grid.innerHTML = products.filter(isVisibleProduct).slice(0, 3).map(productCard).join("");
+  const render = () => { grid.innerHTML = products.filter(isVisibleProduct).slice(0, 3).map(productCard).join(""); };
+  document.addEventListener("oc:languagechange", render);
+  render();
 }
 
 function setupProductDetail() {
@@ -182,68 +194,77 @@ function setupProductDetail() {
   if (!target) return;
 
   const id = Number(new URLSearchParams(window.location.search).get("id"));
-  const product = products.find(item => item.id === id && isVisibleProduct(item));
+  const baseProduct = products.find(item => item.id === id && isVisibleProduct(item));
   const relatedGrid = document.getElementById("related-grid");
   const relatedSection = document.getElementById("related-section");
 
-  if (!product) {
-    target.className = "product-not-found";
-    target.innerHTML = `<h1>Producto no encontrado</h1><p>La ficha solicitada no existe o ya no está disponible.</p><a class="btn btn--primary" href="catalogo.html">Volver al catálogo</a>`;
-    if (relatedSection) relatedSection.hidden = true;
-    return;
+  function render() {
+    if (!baseProduct) {
+      target.className = "product-not-found i18n-dynamic";
+      target.innerHTML = `<h1>${I18N.m("productNotFoundTitle")}</h1><p>${I18N.m("productNotFoundText")}</p><a class="btn btn--primary" href="catalogo.html">${I18N.m("backToCatalog")}</a>`;
+      if (relatedSection) relatedSection.hidden = true;
+      return;
+    }
+
+    const product = localized(baseProduct);
+    document.title = `${product.name} | Ocasiones Calpe`;
+    const breadcrumb = document.getElementById("breadcrumb-product");
+    if (breadcrumb) breadcrumb.textContent = product.name;
+
+    const availability = stockInfo(baseProduct);
+    const detailsEntries = Object.entries(product.details || {});
+    const details = [
+      [I18N.m("reference"), baseProduct.reference || `OC-${baseProduct.id}`],
+      ...detailsEntries
+    ].map(([key, value]) => `<div><span>${key}</span><strong>${value}</strong></div>`).join("");
+
+    const availabilityTitle = baseProduct.type === "nuevo" ? I18N.m("inStoreStock") : I18N.m("availability");
+    const availabilityExtra = baseProduct.type === "nuevo"
+      ? `<span class="stock-number">${Number(baseProduct.stock) > 0 ? Number(baseProduct.stock) : "0"}</span>`
+      : `<span class="stock-unique">1</span>`;
+
+    target.innerHTML = `
+      <div class="product-detail__image">
+        <img src="${baseProduct.image}" alt="${product.name}" />
+        <span class="product-detail__type product-type ${typeClass(baseProduct)}">${product.typeLabel}</span>
+      </div>
+      <div class="product-detail__content">
+        <div class="product-detail__labels"><span class="eyebrow">${product.categoryLabel}</span><span class="product-reference">Ref. ${baseProduct.reference || `OC-${baseProduct.id}`}</span></div>
+        <h1>${product.name}</h1>
+        <div class="product-detail__meta"><span class="status ${statusClass(baseProduct.mounting)}">${product.mountingLabel}</span><span class="status status--none">${product.condition}</span></div>
+        <p>${product.description}</p>
+        <div class="product-availability-panel ${availability.className}">
+          <div class="product-availability-panel__count">${availabilityExtra}</div>
+          <div><small>${availabilityTitle}</small><strong>${availability.label}</strong><span>${availability.detailLong}</span></div>
+        </div>
+        <div class="product-detail__details">${details}</div>
+        <div class="product-detail__price">${product.price}</div>
+        <div class="product-detail__notice">${I18N.m("catalogueNotice")}</div>
+        <div class="hero__actions"><a class="btn btn--primary" href="${whatsappUrl(productWhatsappMessage(baseProduct))}" target="_blank" rel="noopener noreferrer">${I18N.m("askWhatsapp")}</a><a class="btn btn--ghost" href="catalogo.html?tipo=${baseProduct.type}&categoria=${baseProduct.category}">${I18N.m("viewSimilar")}</a></div>
+      </div>`;
+
+    const visible = products.filter(item => item.id !== baseProduct.id && isVisibleProduct(item));
+    const related = [
+      ...visible.filter(item => item.category === baseProduct.category && item.type === baseProduct.type),
+      ...visible.filter(item => item.category === baseProduct.category && item.type !== baseProduct.type),
+      ...visible.filter(item => item.category !== baseProduct.category && item.type === baseProduct.type),
+      ...visible.filter(item => item.category !== baseProduct.category && item.type !== baseProduct.type)
+    ].filter((item, index, array) => array.findIndex(candidate => candidate.id === item.id) === index).slice(0, 3);
+
+    if (relatedGrid) relatedGrid.innerHTML = related.map(productCard).join("");
   }
 
-  document.title = `${product.name} | Ocasiones Calpe`;
-  const breadcrumb = document.getElementById("breadcrumb-product");
-  if (breadcrumb) breadcrumb.textContent = product.name;
-
-  const availability = stockInfo(product);
-  const details = [
-    ["Referencia", product.reference || `OC-${product.id}`],
-    ...Object.entries(product.details || {})
-  ].map(([key, value]) => `<div><span>${key}</span><strong>${value}</strong></div>`).join("");
-
-  const availabilityTitle = product.type === "nuevo" ? "Stock en tienda" : "Disponibilidad";
-  const availabilityExtra = product.type === "nuevo"
-    ? `<span class="stock-number">${Number(product.stock) > 0 ? Number(product.stock) : "0"}</span>`
-    : `<span class="stock-unique">1</span>`;
-
-  target.innerHTML = `
-    <div class="product-detail__image">
-      <img src="${product.image}" alt="${product.name}" />
-      <span class="product-detail__type product-type ${typeClass(product)}">${product.typeLabel}</span>
-    </div>
-    <div class="product-detail__content">
-      <div class="product-detail__labels"><span class="eyebrow">${product.categoryLabel}</span><span class="product-reference">Ref. ${product.reference || `OC-${product.id}`}</span></div>
-      <h1>${product.name}</h1>
-      <div class="product-detail__meta"><span class="status ${statusClass(product.mounting)}">${product.mountingLabel}</span><span class="status status--none">${product.condition}</span></div>
-      <p>${product.description}</p>
-      <div class="product-availability-panel ${availability.className}">
-        <div class="product-availability-panel__count">${availabilityExtra}</div>
-        <div><small>${availabilityTitle}</small><strong>${availability.label}</strong><span>${availability.detailLong}</span></div>
-      </div>
-      <div class="product-detail__details">${details}</div>
-      <div class="product-detail__price">${product.price}</div>
-      <div class="product-detail__notice">La web funciona como catálogo. La compra, reserva, transporte y montaje se confirman directamente con la tienda.</div>
-      <div class="hero__actions"><a class="btn btn--primary" href="${whatsappUrl(productWhatsappMessage(product))}" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a><a class="btn btn--ghost" href="catalogo.html?tipo=${product.type}&categoria=${product.category}">Ver similares</a></div>
-    </div>`;
-
-  const visible = products.filter(item => item.id !== product.id && isVisibleProduct(item));
-  const related = [
-    ...visible.filter(item => item.category === product.category && item.type === product.type),
-    ...visible.filter(item => item.category === product.category && item.type !== product.type),
-    ...visible.filter(item => item.category !== product.category && item.type === product.type),
-    ...visible.filter(item => item.category !== product.category && item.type !== product.type)
-  ].filter((item, index, array) => array.findIndex(candidate => candidate.id === item.id) === index).slice(0, 3);
-
-  if (relatedGrid) relatedGrid.innerHTML = related.map(productCard).join("");
+  document.addEventListener("oc:languagechange", render);
+  render();
 }
 
 function setupWhatsAppLinks() {
   document.querySelectorAll(".js-whatsapp").forEach(link => {
     link.addEventListener("click", event => {
       event.preventDefault();
-      window.open(whatsappUrl(link.dataset.message || "Hola, me gustaría hacer una consulta."), "_blank", "noopener");
+      const spanishMessage = link.dataset.message || "Hola, me gustaría hacer una consulta.";
+      const message = I18N.t(spanishMessage) !== spanishMessage ? I18N.t(spanishMessage) : (spanishMessage === "Hola, me gustaría hacer una consulta." ? I18N.m("genericWhatsapp") : spanishMessage);
+      window.open(whatsappUrl(message), "_blank", "noopener");
     });
   });
 }
@@ -254,12 +275,14 @@ function setupContactForm() {
   form.addEventListener("submit", event => {
     event.preventDefault();
     const data = new FormData(form);
+    const selectedOption = form.querySelector('select[name="interest"] option:checked');
+    const interest = selectedOption?.textContent || data.get("interest");
     const message = [
-      "Hola, contacto desde la web de Ocasiones Calpe.",
-      `Nombre: ${data.get("name")}`,
-      `Teléfono: ${data.get("phone")}`,
-      `Interés: ${data.get("interest")}`,
-      `Mensaje: ${data.get("message")}`
+      I18N.m("contactIntro"),
+      `${I18N.m("contactName")}: ${data.get("name")}`,
+      `${I18N.m("contactPhone")}: ${data.get("phone")}`,
+      `${I18N.m("contactInterest")}: ${interest}`,
+      `${I18N.m("contactMessage")}: ${data.get("message")}`
     ].join("\n");
     window.open(whatsappUrl(message), "_blank", "noopener");
   });
