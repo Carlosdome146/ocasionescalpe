@@ -1,9 +1,7 @@
-# Backend/configuration files that must not be uploaded as static assets
 worker.js
 wrangler.jsonc
 .assetsignore
-
-# Git/tooling
+schema.sql
 .git
 .git/**
 .github

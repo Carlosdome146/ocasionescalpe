@@ -1,5 +1,6 @@
 const WHATSAPP_NUMBER = "34609377974";
-const products = Array.isArray(window.OC_PRODUCTS) ? window.OC_PRODUCTS : [];
+let products = Array.isArray(window.OC_PRODUCTS) ? window.OC_PRODUCTS : [];
+const demoProducts = [...products];
 const I18N = window.OC_I18N || {
   getLanguage: () => "es",
   t: value => value,
@@ -24,7 +25,34 @@ function typeClass(product) {
 }
 
 function localized(product) {
-  return I18N.localizeProduct(product);
+  const localizedProduct = I18N.localizeProduct(product);
+  return {
+    ...localizedProduct,
+    typeLabel: I18N.t(localizedProduct.typeLabel || ""),
+    categoryLabel: I18N.t(localizedProduct.categoryLabel || ""),
+    mountingLabel: I18N.t(localizedProduct.mountingLabel || ""),
+    condition: I18N.t(localizedProduct.condition || "")
+  };
+}
+
+function supplierLeadText(days, long = false) {
+  const d = Number(days) || 7;
+  const lang = I18N.getLanguage();
+  const values = {
+    es: d === 1
+      ? (long ? "Si no queda stock físico, podemos solicitarlo al proveedor con un plazo aproximado de 1 día." : "Proveedor: aprox. 1 día")
+      : (long ? `Si no queda stock físico, podemos solicitarlo al proveedor con un plazo aproximado de ${d} días.` : `Proveedor: aprox. ${d} días`),
+    en: d === 1
+      ? (long ? "If there is no physical stock, we can order it from the supplier with an estimated lead time of 1 day." : "Supplier: approx. 1 day")
+      : (long ? `If there is no physical stock, we can order it from the supplier with an estimated lead time of ${d} days.` : `Supplier: approx. ${d} days`),
+    fr: d === 1
+      ? (long ? "S'il n'y a plus de stock physique, nous pouvons le commander au fournisseur avec un délai estimé d'environ 1 jour." : "Fournisseur : env. 1 jour")
+      : (long ? `S'il n'y a plus de stock physique, nous pouvons le commander au fournisseur avec un délai estimé d'environ ${d} jours.` : `Fournisseur : env. ${d} jours`),
+    de: d === 1
+      ? (long ? "Wenn kein Lagerbestand vorhanden ist, können wir beim Lieferanten mit einer ungefähren Lieferzeit von 1 Tag bestellen." : "Lieferant: ca. 1 Tag")
+      : (long ? `Wenn kein Lagerbestand vorhanden ist, können wir beim Lieferanten mit einer ungefähren Lieferzeit von ${d} Tagen bestellen.` : `Lieferant: ca. ${d} Tage`)
+  };
+  return values[lang] || values.es;
 }
 
 function stockInfo(product) {
@@ -43,8 +71,8 @@ function stockInfo(product) {
     return {
       className: "availability--order",
       label: product.replenishment ? I18N.m("orderLabel") : I18N.m("noStockLabel"),
-      detail: product.replenishment ? I18N.m("replenishDetail") : I18N.m("checkDetail"),
-      detailLong: product.replenishment ? I18N.m("replenishLong") : I18N.m("noStockLong")
+      detail: product.replenishment ? supplierLeadText(product.supplierLeadDays) : I18N.m("checkDetail"),
+      detailLong: product.replenishment ? supplierLeadText(product.supplierLeadDays, true) : I18N.m("noStockLong")
     };
   }
 
@@ -53,7 +81,7 @@ function stockInfo(product) {
       className: "availability--low",
       label: I18N.m("lastUnit"),
       detail: I18N.m("oneAvailable"),
-      detailLong: product.replenishment ? I18N.m("oneReplenishLong") : I18N.m("oneLong")
+      detailLong: product.replenishment ? `${I18N.m("oneReplenishLong")} ${supplierLeadText(product.supplierLeadDays)}` : I18N.m("oneLong")
     };
   }
 
@@ -62,7 +90,7 @@ function stockInfo(product) {
       className: "availability--low",
       label: I18N.m("lastUnits"),
       detail: I18N.m("twoAvailable"),
-      detailLong: product.replenishment ? I18N.m("twoReplenishLong") : I18N.m("twoLong")
+      detailLong: product.replenishment ? `${I18N.m("twoReplenishLong")} ${supplierLeadText(product.supplierLeadDays)}` : I18N.m("twoLong")
     };
   }
 
@@ -71,7 +99,7 @@ function stockInfo(product) {
     label: I18N.m("inStock"),
     detail: I18N.m("unitsAvailable", { count: stock }),
     detailLong: product.replenishment
-      ? I18N.m("unitsReplenishLong", { count: stock })
+      ? `${I18N.m("unitsReplenishLong", { count: stock })} ${supplierLeadText(product.supplierLeadDays)}`
       : I18N.m("unitsLong", { count: stock })
   };
 }
@@ -318,11 +346,34 @@ function setupReveal() {
   elements.forEach(element => observer.observe(element));
 }
 
-setupNavigation();
-setupWhatsAppLinks();
-setupContactForm();
-setupCatalog();
-setupFeatured();
-setupProductDetail();
-setupReveal();
-document.querySelectorAll("#year").forEach(year => { year.textContent = new Date().getFullYear(); });
+async function loadProductsFromApi() {
+  try {
+    const response = await fetch("/api/products", { headers: { "Accept": "application/json" } });
+    if (!response.ok) return;
+    const data = await response.json();
+    if (Array.isArray(data.products) && data.products.length > 0) {
+      products = data.products;
+      document.documentElement.dataset.catalogSource = "d1";
+    } else {
+      products = demoProducts;
+      document.documentElement.dataset.catalogSource = "demo";
+    }
+  } catch {
+    products = demoProducts;
+    document.documentElement.dataset.catalogSource = "demo";
+  }
+}
+
+async function bootstrap() {
+  await loadProductsFromApi();
+  setupNavigation();
+  setupWhatsAppLinks();
+  setupContactForm();
+  setupCatalog();
+  setupFeatured();
+  setupProductDetail();
+  setupReveal();
+  document.querySelectorAll("#year").forEach(year => { year.textContent = new Date().getFullYear(); });
+}
+
+bootstrap();
