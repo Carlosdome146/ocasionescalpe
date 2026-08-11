@@ -366,7 +366,7 @@ h2 { margin: 0; font-size: clamp(36px, 4vw, 55px); line-height: 1.02; }
 .product-availability-panel.availability--order { background: #ecece8; }
 .product-availability-panel.availability--used { background: var(--black); color: var(--white); border-color: var(--black); border-left: 7px solid var(--yellow); }
 .product-availability-panel.availability--used .product-availability-panel__count { background: var(--yellow); color: var(--black); }
-.product-detail__notice { margin: -4px 0 22px; padding: 10px 12px; border-left: 5px solid var(--yellow); background: var(--offwhite); color: var(--gray); font-size: 10px; }
+.product-detail__notice { margin: -4px 0 22px; padding: 10px 12px; border-left: 5px solid var(--black); background: var(--offwhite); color: var(--gray); font-size: 10px; }
 
 @media (max-width: 850px) {
   .catalog-type-switch { grid-template-columns: 1fr; }

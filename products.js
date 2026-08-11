@@ -41,7 +41,7 @@ window.OC_PRODUCTS = [
         "price": "Nous consulter",
         "condition": "Bon état",
         "mountingLabel": "Montage optionnel",
-        "description": "Canapé de grande capacité, idéal pour les salons familiaux et les espaces détente. Modèle DEMO d’occasion.",
+        "description": "Canapé de grande capacit, idéal pour les salons familiaux et les espaces détente. Modèle DEMO d’occasion.",
         "details": {
           "Dimensions": "Nous consulter",
           "Couleur": "Gris neutre",

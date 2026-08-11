@@ -96,7 +96,7 @@
       "Y CLARO": "AND CLEAR",
       "Servicio flexible": "Flexible service",
       "Cada producto muestra su opción de montaje.": "Each product shows its assembly option.",
-      "Antes de confirmar, sabrás si el montaje está incluido, si puede añadirse como servicio opcional o si el producto no lo necesita.": "Before confirming, you will know whether assembly is included, can be added as an optional service, or is not required.",
+      "Antes de confirmar, sabrás si el montaje está incluido, si puede añadirse como servicio opcional o, si el producto no lo necesita.": "Before confirming, you will know whether assembly is included, can be added as an optional service, or is not required.",
       "Consultar montaje": "Ask about assembly",
       "Condiciones visibles": "Clear conditions",
       "Tres posibilidades": "Three options",
