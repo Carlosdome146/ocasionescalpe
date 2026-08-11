@@ -3,7 +3,6 @@
   "name": "ocasionescalpe",
   "main": "worker.js",
   "compatibility_date": "2026-08-11",
-
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
@@ -11,10 +10,13 @@
       "/api/*",
       "/admin",
       "/admin/*",
-      "/media/*"
+      "/media/*",
+      "/robots.txt",
+      "/sitemap.xml",
+      "/producto",
+      "/producto.html"
     ]
   },
-
   "d1_databases": [
     {
       "binding": "DB",
@@ -22,7 +24,6 @@
       "database_id": "fe635bbe-57fc-4699-b8f4-a7010b839a11"
     }
   ],
-
   "r2_buckets": [
     {
       "binding": "MEDIA",

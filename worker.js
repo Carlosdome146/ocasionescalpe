@@ -256,6 +256,8 @@ function publicProduct(row, images = []) {
     image: orderedImages[0]?.url || fallbackImage(row.category),
     images: orderedImages,
     price: formatPrice(row),
+    priceCents: row.price_cents == null ? null : Number(row.price_cents),
+    priceOnRequest: Boolean(row.price_on_request),
     condition: row.condition_text || (row.product_type === "nuevo" ? "Producto nuevo" : "Buen estado"),
     mounting,
     mountingLabel,
@@ -704,6 +706,224 @@ async function setCover(env, imageId) {
   return json({ ok: true });
 }
 
+
+function xmlEscape(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function htmlEscape(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function jsonLd(value) {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}
+
+function absoluteUrl(origin, value) {
+  return new URL(value || "/", origin).href;
+}
+
+function productAvailability(product) {
+  if (product.status === "reserved") return "https://schema.org/LimitedAvailability";
+  if (product.type === "nuevo" && Number(product.stock || 0) <= 0 && product.replenishment) {
+    return "https://schema.org/BackOrder";
+  }
+  return "https://schema.org/InStock";
+}
+
+async function serveRobots(url) {
+  const body = [
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /admin/",
+    "Disallow: /api/",
+    "",
+    `Sitemap: ${url.origin}/sitemap.xml`,
+    ""
+  ].join("\n");
+
+  return new Response(body, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=3600"
+    }
+  });
+}
+
+async function serveSitemap(env, url) {
+  const staticUrls = [
+    "/",
+    "/catalogo",
+    "/montaje",
+    "/tienda",
+    "/contacto",
+    "/aviso-legal",
+    "/privacidad",
+    "/cookies"
+  ];
+
+  const { results = [] } = await env.DB.prepare(`
+    SELECT id, updated_at
+    FROM products
+    WHERE published = 1
+      AND status NOT IN ('vendido', 'oculto')
+    ORDER BY id DESC
+  `).all();
+
+  const entries = staticUrls.map(path => {
+    return `<url><loc>${xmlEscape(new URL(path, url.origin).href)}</loc></url>`;
+  });
+
+  for (const row of results) {
+    const loc = new URL(`/producto?id=${encodeURIComponent(row.id)}`, url.origin).href;
+    const date = String(row.updated_at || "").slice(0, 10);
+    entries.push(
+      `<url><loc>${xmlEscape(loc)}</loc>${/^\d{4}-\d{2}-\d{2}$/.test(date) ? `<lastmod>${date}</lastmod>` : ""}</url>`
+    );
+  }
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${entries.join("")}</urlset>`;
+
+  return new Response(xml, {
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, max-age=900"
+    }
+  });
+}
+
+async function serveSeoProductPage(request, env, url) {
+  if (url.pathname === "/producto.html") {
+    const target = new URL("/producto", url.origin);
+    target.search = url.search;
+    return Response.redirect(target.href, 301);
+  }
+
+  const id = Number.parseInt(url.searchParams.get("id") || "", 10);
+  if (!Number.isFinite(id) || id <= 0) {
+    return new Response("Producto no encontrado", {
+      status: 404,
+      headers: { "Content-Type": "text/plain; charset=utf-8" }
+    });
+  }
+
+  const product = await publicProductById(env, id);
+  if (!product) {
+    return new Response("Producto no encontrado", {
+      status: 404,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Robots-Tag": "noindex"
+      }
+    });
+  }
+
+  const assetResponse = await env.ASSETS.fetch(request);
+  if (!assetResponse.ok) return assetResponse;
+
+  let page = await assetResponse.text();
+  const canonical = new URL(`/producto?id=${id}`, url.origin).href;
+  const title = `${product.name} | Ocasiones Calpe`;
+  const descSource = product.description || `${product.categoryLabel} en Ocasiones Calpe, Calpe. Consulta disponibilidad y condiciones por WhatsApp.`;
+  const description = String(descSource).replace(/\s+/g, " ").trim().slice(0, 155);
+  const images = (product.images?.length ? product.images.map(img => absoluteUrl(url.origin, img.url)) : [absoluteUrl(url.origin, product.image)]);
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${canonical}#product`,
+    "name": product.name,
+    "description": product.description || description,
+    "sku": product.reference,
+    "image": images,
+    "url": canonical,
+    "itemCondition": product.type === "nuevo"
+      ? "https://schema.org/NewCondition"
+      : "https://schema.org/UsedCondition",
+    "seller": {
+      "@type": "Organization",
+      "name": "Ocasiones Calpe",
+      "url": url.origin + "/"
+    }
+  };
+
+  if (!product.priceOnRequest && product.priceCents != null) {
+    productSchema.offers = {
+      "@type": "Offer",
+      "url": canonical,
+      "priceCurrency": "EUR",
+      "price": (Number(product.priceCents) / 100).toFixed(2),
+      "availability": productAvailability(product),
+      "seller": {
+        "@type": "Organization",
+        "name": "Ocasiones Calpe"
+      }
+    };
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": url.origin + "/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Catálogo",
+        "item": url.origin + "/catalogo"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": canonical
+      }
+    ]
+  };
+
+  // Replace generic title / description, then append server-rendered SEO data.
+  page = page.replace(/<title>.*?<\/title>/is, `<title>${htmlEscape(title)}</title>`);
+  page = page.replace(
+    /<meta\s+content="[^"]*"\s+name="description"\s*\/?>/i,
+    `<meta content="${htmlEscape(description)}" name="description"/>`
+  );
+
+  const seoHead = `
+<link href="${htmlEscape(canonical)}" rel="canonical"/>
+<meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
+<meta content="${htmlEscape(title)}" property="og:title"/>
+<meta content="${htmlEscape(description)}" property="og:description"/>
+<meta content="${htmlEscape(canonical)}" property="og:url"/>
+<meta content="product" property="og:type"/>
+<meta content="${htmlEscape(images[0])}" property="og:image"/>
+<meta content="Ocasiones Calpe" property="og:site_name"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<script type="application/ld+json">${jsonLd(productSchema)}</script>
+<script type="application/ld+json">${jsonLd(breadcrumbSchema)}</script>`;
+
+  page = page.replace("</head>", `${seoHead}\n</head>`);
+
+  const headers = new Headers(assetResponse.headers);
+  headers.set("Content-Type", "text/html; charset=utf-8");
+  headers.set("Cache-Control", "public, max-age=300");
+  return new Response(page, { status: 200, headers });
+}
+
 async function handleApi(request, env, url) {
   const path = url.pathname;
 
@@ -763,6 +983,18 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const { pathname } = url;
+
+    if (pathname === "/robots.txt") {
+      return serveRobots(url);
+    }
+
+    if (pathname === "/sitemap.xml") {
+      return serveSitemap(env, url);
+    }
+
+    if (pathname === "/producto" || pathname === "/producto.html") {
+      return serveSeoProductPage(request, env, url);
+    }
 
     if (pathname.startsWith("/api/")) {
       try {
