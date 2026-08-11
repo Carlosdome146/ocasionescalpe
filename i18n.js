@@ -4,6 +4,36 @@
 
   const phrases = {
     en: {
+      "Servicios": "Services",
+      "Reparaciones": "Repairs",
+      "Servicios para tu hogar": "Services for your home",
+      "Montaje y reparación, sin complicaciones.": "Assembly and repairs, without complications.",
+      "Además del montaje de muebles, puedes consultar reparaciones de electrodomésticos con nuestro servicio técnico colaborador ELECTROSTAR.": "In addition to furniture assembly, you can request appliance repairs through our technical service partner ELECTROSTAR.",
+      "Ver servicios": "View services",
+      "Montaje y reparaciones": "Assembly and repairs",
+      "Montaje de muebles y reparación de electrodomésticos, con atención directa y sin complicaciones.": "Furniture assembly and appliance repairs, with direct and straightforward service.",
+      "CLARO": "CLEAR",
+      "DIRECTO": "DIRECT",
+      "Montaje de muebles": "Furniture assembly",
+      "Montaje cuando lo necesitas.": "Assembly when you need it.",
+      "Cada producto indica si el montaje está incluido, es opcional o no es necesario.": "Each product shows whether assembly is included, optional or not required.",
+      "En productos seleccionados": "On selected products",
+      "Se confirma antes de la compra": "Confirmed before purchase",
+      "Artículos listos para usar": "Items ready to use",
+      "Servicio técnico": "Technical service",
+      "Reparación de electrodomésticos": "Appliance repairs",
+      "Servicio Técnico Profesional": "Professional Technical Service",
+      "Si tu electrodoméstico no funciona, puedes consultar directamente con nuestro servicio técnico colaborador.": "If your appliance is not working, you can contact our technical service partner directly.",
+      "Teléfono y WhatsApp": "Phone and WhatsApp",
+      "Consultar reparación por WhatsApp": "Ask about a repair on WhatsApp",
+      "Llamar": "Call",
+      "Servicio de reparación gestionado en colaboración con ELECTROSTAR.": "Repair service provided in collaboration with ELECTROSTAR.",
+      "¿Montaje o reparación?": "Assembly or repair?",
+      "Cuéntanos qué necesitas.": "Tell us what you need.",
+      "Te indicamos la forma más directa de gestionar cada servicio.": "We will show you the most direct way to arrange each service.",
+      "Hablar con Ocasiones Calpe": "Talk to Ocasiones Calpe",
+      "Contactar con ELECTROSTAR": "Contact ELECTROSTAR",
+      "Hola, me gustaría consultar una reparación de electrodoméstico con ELECTROSTAR.": "Hello, I would like to ask about an appliance repair with ELECTROSTAR.",
       "Stock en constante renovación": "Stock constantly updated",
       "Productos nuevos y de segunda mano": "New and second-hand products",
       "Consulta disponibilidad antes de desplazarte": "Check availability before visiting",
@@ -91,12 +121,12 @@
       "Productos relacionados": "Related products",
       "Volver al catálogo →": "Back to catalogue →",
       "Tu compra, preparada para usar.": "Your purchase, ready to use.",
-      "Las condiciones de montaje dependen de cada producto y se confirman antes de cerrar la compra.": "Assembly conditions depend on each product and are confirmed before the purchase is finalised.",
+      "Las condiciones del montaje dependen de cada producto y se confirman antes de cerrar la compra.": "Assembly conditions depend on each product and are confirmed before the purchase is finalised.",
       "FÁCIL": "EASY",
       "Y CLARO": "AND CLEAR",
       "Servicio flexible": "Flexible service",
       "Cada producto muestra su opción de montaje.": "Each product shows its assembly option.",
-      "Antes de confirmar, sabrás si el montaje está incluido, si puede añadirse como servicio opcional o, si el producto no lo necesita.": "Before confirming, you will know whether assembly is included, can be added as an optional service, or is not required.",
+      "Antes de confirmar, sabrás si el montaje está incluido, si puede añadirse como servicio opcional o si el producto no lo necesita.": "Before confirming, you will know whether assembly is included, can be added as an optional service, or is not required.",
       "Consultar montaje": "Ask about assembly",
       "Condiciones visibles": "Clear conditions",
       "Tres posibilidades": "Three options",
@@ -192,6 +222,36 @@
       "Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta.": "Hello, I have seen the Ocasiones Calpe website and I would like to make an enquiry."
     },
     fr: {
+      "Servicios": "Services",
+      "Reparaciones": "Réparations",
+      "Servicios para tu hogar": "Services pour votre maison",
+      "Montaje y reparación, sin complicaciones.": "Montage et réparation, en toute simplicité.",
+      "Además del montaje de muebles, puedes consultar reparaciones de electrodomésticos con nuestro servicio técnico colaborador ELECTROSTAR.": "En plus du montage de meubles, vous pouvez demander la réparation d’électroménagers auprès de notre partenaire technique ELECTROSTAR.",
+      "Ver servicios": "Voir les services",
+      "Montaje y reparaciones": "Montage et réparations",
+      "Montaje de muebles y reparación de electrodomésticos, con atención directa y sin complicaciones.": "Montage de meubles et réparation d’électroménagers, avec un service direct et simple.",
+      "CLARO": "CLAIR",
+      "DIRECTO": "DIRECT",
+      "Montaje de muebles": "Montage de meubles",
+      "Montaje cuando lo necesitas.": "Le montage quand vous en avez besoin.",
+      "Cada producto indica si el montaje está incluido, es opcional o no es necesario.": "Chaque produit indique si le montage est inclus, optionnel ou non nécessaire.",
+      "En productos seleccionados": "Sur certains produits",
+      "Se confirma antes de la compra": "Confirmé avant l’achat",
+      "Artículos listos para usar": "Articles prêts à l’emploi",
+      "Servicio técnico": "Service technique",
+      "Reparación de electrodomésticos": "Réparation d’électroménagers",
+      "Servicio Técnico Profesional": "Service Technique Professionnel",
+      "Si tu electrodoméstico no funciona, puedes consultar directamente con nuestro servicio técnico colaborador.": "Si votre appareil ne fonctionne pas, vous pouvez contacter directement notre partenaire de service technique.",
+      "Teléfono y WhatsApp": "Téléphone et WhatsApp",
+      "Consultar reparación por WhatsApp": "Demander une réparation sur WhatsApp",
+      "Llamar": "Appeler",
+      "Servicio de reparación gestionado en colaboración con ELECTROSTAR.": "Service de réparation assuré en collaboration avec ELECTROSTAR.",
+      "¿Montaje o reparación?": "Montage ou réparation ?",
+      "Cuéntanos qué necesitas.": "Dites-nous ce dont vous avez besoin.",
+      "Te indicamos la forma más directa de gestionar cada servicio.": "Nous vous indiquons la manière la plus directe d’organiser chaque service.",
+      "Hablar con Ocasiones Calpe": "Parler à Ocasiones Calpe",
+      "Contactar con ELECTROSTAR": "Contacter ELECTROSTAR",
+      "Hola, me gustaría consultar una reparación de electrodoméstico con ELECTROSTAR.": "Bonjour, je souhaite me renseigner sur une réparation d’électroménager avec ELECTROSTAR.",
       "Stock en constante renovación": "Stock renouvelé en permanence",
       "Productos nuevos y de segunda mano": "Produits neufs et d’occasion",
       "Consulta disponibilidad antes de desplazarte": "Vérifiez la disponibilité avant de vous déplacer",
@@ -378,6 +438,36 @@
       "Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta.": "Bonjour, j’ai consulté le site d’Ocasiones Calpe et je souhaiterais faire une demande."
     },
     de: {
+      "Servicios": "Service",
+      "Reparaciones": "Reparaturen",
+      "Servicios para tu hogar": "Services für Ihr Zuhause",
+      "Montaje y reparación, sin complicaciones.": "Montage und Reparatur, direkt und unkompliziert.",
+      "Además del montaje de muebles, puedes consultar reparaciones de electrodomésticos con nuestro servicio técnico colaborador ELECTROSTAR.": "Neben der Möbelmontage können Sie Reparaturen von Elektrogeräten über unseren technischen Servicepartner ELECTROSTAR anfragen.",
+      "Ver servicios": "Services ansehen",
+      "Montaje y reparaciones": "Montage und Reparaturen",
+      "Montaje de muebles y reparación de electrodomésticos, con atención directa y sin complicaciones.": "Möbelmontage und Reparatur von Elektrogeräten mit direktem und unkompliziertem Service.",
+      "CLARO": "KLAR",
+      "DIRECTO": "DIREKT",
+      "Montaje de muebles": "Möbelmontage",
+      "Montaje cuando lo necesitas.": "Montage, wenn Sie sie brauchen.",
+      "Cada producto indica si el montaje está incluido, es opcional o no es necesario.": "Bei jedem Produkt wird angegeben, ob die Montage inklusive, optional oder nicht erforderlich ist.",
+      "En productos seleccionados": "Bei ausgewählten Produkten",
+      "Se confirma antes de la compra": "Vor dem Kauf bestätigt",
+      "Artículos listos para usar": "Sofort nutzbare Artikel",
+      "Servicio técnico": "Technischer Service",
+      "Reparación de electrodomésticos": "Reparatur von Elektrogeräten",
+      "Servicio Técnico Profesional": "Professioneller Technischer Service",
+      "Si tu electrodoméstico no funciona, puedes consultar directamente con nuestro servicio técnico colaborador.": "Wenn Ihr Elektrogerät nicht funktioniert, können Sie sich direkt an unseren technischen Servicepartner wenden.",
+      "Teléfono y WhatsApp": "Telefon und WhatsApp",
+      "Consultar reparación por WhatsApp": "Reparatur über WhatsApp anfragen",
+      "Llamar": "Anrufen",
+      "Servicio de reparación gestionado en colaboración con ELECTROSTAR.": "Reparaturservice in Zusammenarbeit mit ELECTROSTAR.",
+      "¿Montaje o reparación?": "Montage oder Reparatur?",
+      "Cuéntanos qué necesitas.": "Sagen Sie uns, was Sie brauchen.",
+      "Te indicamos la forma más directa de gestionar cada servicio.": "Wir zeigen Ihnen den direktesten Weg, den jeweiligen Service zu organisieren.",
+      "Hablar con Ocasiones Calpe": "Ocasiones Calpe kontaktieren",
+      "Contactar con ELECTROSTAR": "ELECTROSTAR kontaktieren",
+      "Hola, me gustaría consultar una reparación de electrodoméstico con ELECTROSTAR.": "Hallo, ich möchte mich nach einer Reparatur eines Elektrogeräts bei ELECTROSTAR erkundigen.",
       "Stock en constante renovación": "Lagerbestand wird laufend aktualisiert",
       "Productos nuevos y de segunda mano": "Neu- und Gebrauchtwaren",
       "Consulta disponibilidad antes de desplazarte": "Bitte Verfügbarkeit vor dem Besuch prüfen",
@@ -766,10 +856,10 @@
 
   const pageMeta = {
     inicio: {
-      es: ["Ocasiones Calpe | Muebles, electrodomésticos y descanso", "Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar en Calpe. Consulta el catálogo y las opciones de montaje."],
-      en: ["Ocasiones Calpe | Furniture, appliances and bedding", "Ocasiones Calpe: furniture, appliances, mattresses and home items in Calpe. Browse the catalogue and assembly options."],
-      fr: ["Ocasiones Calpe | Meubles, électroménager et literie", "Ocasiones Calpe : meubles, électroménager, matelas et articles pour la maison à Calpe. Consultez le catalogue et les options de montage."],
-      de: ["Ocasiones Calpe | Möbel, Elektrogeräte und Schlafen", "Ocasiones Calpe: Möbel, Elektrogeräte, Matratzen und Haushaltsartikel in Calpe. Entdecken Sie den Katalog und die Montageoptionen."]
+      es: ["Ocasiones Calpe | Muebles, electrodomésticos y descanso", "Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar en Calpe. Catálogo, montaje y reparación de electrodomésticos."],
+      en: ["Ocasiones Calpe | Furniture, appliances and bedding", "Ocasiones Calpe in Calpe: furniture, appliances, mattresses and home items, plus assembly and appliance repair services."],
+      fr: ["Ocasiones Calpe | Meubles, électroménager et literie", "Ocasiones Calpe à Calpe : meubles, électroménager, matelas et articles pour la maison, avec montage et réparation d’électroménagers."],
+      de: ["Ocasiones Calpe | Möbel, Elektrogeräte und Schlafen", "Ocasiones Calpe in Calpe: Möbel, Elektrogeräte, Matratzen und Haushaltsartikel sowie Montage und Reparatur von Elektrogeräten."]
     },
     catalogo: {
       es: ["Catálogo | Ocasiones Calpe", "Consulta el catálogo de productos nuevos y de segunda mano de Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar."],
@@ -778,10 +868,10 @@
       de: ["Katalog | Ocasiones Calpe", "Entdecken Sie den Katalog mit Neu- und Gebrauchtwaren von Ocasiones Calpe: Möbel, Elektrogeräte, Matratzen und Haushaltsartikel."]
     },
     montaje: {
-      es: ["Servicio de montaje | Ocasiones Calpe", "Información sobre el servicio de montaje de Ocasiones Calpe: incluido, opcional o no necesario según cada producto."],
-      en: ["Assembly service | Ocasiones Calpe", "Information about Ocasiones Calpe's assembly service: included, optional or not required depending on the product."],
-      fr: ["Service de montage | Ocasiones Calpe", "Informations sur le service de montage d’Ocasiones Calpe : inclus, optionnel ou non nécessaire selon le produit."],
-      de: ["Montageservice | Ocasiones Calpe", "Informationen zum Montageservice von Ocasiones Calpe: je nach Produkt inklusive, optional oder nicht erforderlich."]
+      es: ["Montaje y reparaciones | Ocasiones Calpe", "Montaje de muebles y reparación de electrodomésticos en Calpe. Ocasiones Calpe colabora con ELECTROSTAR, Servicio Técnico Profesional."],
+      en: ["Assembly and repairs | Ocasiones Calpe", "Furniture assembly and appliance repair services in Calpe. Ocasiones Calpe works with ELECTROSTAR, Professional Technical Service."],
+      fr: ["Montage et réparations | Ocasiones Calpe", "Montage de meubles et réparation d’électroménagers à Calpe. Ocasiones Calpe collabore avec ELECTROSTAR, Service Technique Professionnel."],
+      de: ["Montage und Reparaturen | Ocasiones Calpe", "Möbelmontage und Reparatur von Elektrogeräten in Calpe. Ocasiones Calpe arbeitet mit ELECTROSTAR, Professioneller Technischer Service, zusammen."]
     },
     tienda: {
       es: ["Nosotros | Ocasiones Calpe", "Conoce la historia de Ocasiones Calpe, fundada en 1976 y dedicada a muebles, electrodomésticos, descanso y artículos para el hogar en Calpe."],
@@ -790,7 +880,7 @@
       de: ["Über uns | Ocasiones Calpe", "Erfahren Sie mehr über Ocasiones Calpe, gegründet 1976 und spezialisiert auf Möbel, Elektrogeräte, Schlafprodukte und Haushaltsartikel in Calpe."]
     },
     contacto: {
-      es: ["Contacto | Ocasiones Calpe", "Contacta con Ocasiones Calpe por WhatsApp, teléfono o formulario para consultar productos, stock, transporte y montaje."],
+      es: ["Contacto | Ocasiones Calpe", "Contacta con Ocasiones Calpe por WhatsApp, teléfono o formulario para consultar productos, stock, transporte, montaje y reparaciones."],
       en: ["Contact | Ocasiones Calpe", "Contact Ocasiones Calpe via WhatsApp, phone or form to ask about products, stock, transport and assembly."],
       fr: ["Contact | Ocasiones Calpe", "Contactez Ocasiones Calpe par WhatsApp, téléphone ou formulaire pour les produits, le stock, le transport et le montage."],
       de: ["Kontakt | Ocasiones Calpe", "Kontaktieren Sie Ocasiones Calpe per WhatsApp, Telefon oder Formular zu Produkten, Bestand, Transport und Montage."]
@@ -896,6 +986,13 @@
     });
   }
 
+  function updateRepairWhatsapp() {
+    document.querySelectorAll("[data-repair-whatsapp]").forEach(link => {
+      const source = link.dataset.repairMessage || "Hola, me gustaría consultar una reparación de electrodoméstico con ELECTROSTAR.";
+      link.href = `https://wa.me/34690270313?text=${encodeURIComponent(t(source))}`;
+    });
+  }
+
   function applyLanguage() {
     document.documentElement.lang = currentLanguage;
     translateTextNodes();
@@ -903,6 +1000,7 @@
     updateMeta();
     updateLanguageButtons();
     updateSocialWhatsapp();
+    updateRepairWhatsapp();
   }
 
   function setLanguage(language) {

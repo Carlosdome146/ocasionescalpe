@@ -475,3 +475,217 @@ h2 { margin: 0; font-size: clamp(36px, 4vw, 55px); line-height: 1.02; }
   }
 }
 
+/* Servicios: montaje + reparaciones */
+.home-services-visual {
+  min-height: 360px;
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  border: 4px solid var(--black);
+  background:
+    linear-gradient(145deg, transparent 0 49%, rgba(0,0,0,.08) 49% 51%, transparent 51%),
+    var(--yellow);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.home-services-visual span {
+  width: fit-content;
+  padding: 7px 11px;
+  border: 2px solid var(--black);
+  background: var(--white);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.home-services-visual strong {
+  margin-top: 8px;
+  font-family: Impact, "Arial Black", "Arial Narrow", sans-serif;
+  font-style: italic;
+  font-size: clamp(54px, 8vw, 92px);
+  line-height: .82;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+}
+
+.services-page-hero .page-hero__stamp {
+  background: var(--white);
+}
+
+.services-minimal {
+  background: var(--offwhite);
+}
+.services-minimal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+.minimal-service-card {
+  min-width: 0;
+  padding: clamp(26px, 4vw, 46px);
+  border: 3px solid var(--black);
+  background: var(--white);
+  box-shadow: 7px 7px 0 rgba(0,0,0,.12);
+}
+.minimal-service-card--repair {
+  background: var(--yellow);
+}
+.minimal-service-card__head h2 {
+  margin: 9px 0 13px;
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: .92;
+}
+.minimal-service-card__head p {
+  max-width: 640px;
+  margin: 0 0 24px;
+  color: var(--gray);
+}
+.minimal-service-card--repair .minimal-service-card__head p {
+  color: var(--black);
+}
+
+.service-mini-list {
+  display: grid;
+  margin: 25px 0 28px;
+  border-top: 2px solid var(--black);
+}
+.service-mini-list > div {
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 2px solid var(--black);
+}
+.service-mini-list p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.electrostar-mark {
+  margin: 20px 0 20px;
+  padding: 18px 0;
+  border-top: 3px solid var(--black);
+  border-bottom: 3px solid var(--black);
+}
+.electrostar-mark strong,
+.electrostar-mark span {
+  display: block;
+}
+.electrostar-mark strong {
+  font-family: Impact, "Arial Black", "Arial Narrow", sans-serif;
+  font-style: italic;
+  font-size: clamp(44px, 6vw, 68px);
+  line-height: .9;
+  letter-spacing: .02em;
+}
+.electrostar-mark span {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.repair-contact {
+  margin: 25px 0 20px;
+}
+.repair-contact span,
+.repair-contact a {
+  display: block;
+}
+.repair-contact span {
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.repair-contact a {
+  width: fit-content;
+  font-family: Impact, "Arial Black", "Arial Narrow", sans-serif;
+  font-style: italic;
+  font-size: clamp(35px, 5vw, 54px);
+  line-height: 1;
+  border-bottom: 4px solid var(--black);
+}
+
+.service-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.service-partner-note {
+  display: block;
+  margin-top: 18px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.service-quick-contact {
+  padding: 42px 0;
+  background: var(--black);
+  color: var(--white);
+  border-top: 4px solid var(--yellow);
+  border-bottom: 4px solid var(--yellow);
+}
+.service-quick-contact__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+}
+.service-quick-contact h2 {
+  margin: 6px 0 5px;
+  font-size: clamp(31px, 4vw, 49px);
+  line-height: .9;
+}
+.service-quick-contact p {
+  margin: 0;
+  color: #d8d8d8;
+}
+.btn--outline-light {
+  border-color: var(--white);
+  background: transparent;
+  color: var(--white);
+}
+.btn--outline-light:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+@media (max-width: 860px) {
+  .services-minimal__grid {
+    grid-template-columns: 1fr;
+  }
+  .service-quick-contact__inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-services-visual {
+    min-height: 280px;
+    padding: 24px;
+  }
+  .minimal-service-card {
+    padding: 24px 20px;
+  }
+  .service-mini-list > div {
+    grid-template-columns: 105px 1fr;
+  }
+  .service-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .service-actions .btn {
+    width: 100%;
+  }
+}
+
