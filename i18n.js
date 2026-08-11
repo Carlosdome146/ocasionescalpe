@@ -4,6 +4,15 @@
 
   const phrases = {
     en: {
+      "Aviso legal": "Legal notice",
+      "Privacidad": "Privacy",
+      "Cookies": "Cookies",
+      "Información legal": "Legal information",
+      "Reparación de electrodomésticos": "Appliance repair",
+      "Política de Privacidad": "Privacy Policy",
+      "He leído la": "I have read the",
+      "y entiendo el tratamiento de mis datos para atender esta consulta.": "and I understand how my data will be processed to handle this enquiry.",
+      "Este formulario no guarda los datos en la web: prepara el mensaje y abre WhatsApp para enviarlo a la tienda. No se realiza ningún pago desde esta web.": "This form does not store data on the website: it prepares the message and opens WhatsApp so you can send it to the shop. No payment is made through this website.",
       "Servicios": "Services",
       "Reparaciones": "Repairs",
       "Servicios para tu hogar": "Services for your home",
@@ -222,6 +231,15 @@
       "Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta.": "Hello, I have seen the Ocasiones Calpe website and I would like to make an enquiry."
     },
     fr: {
+      "Aviso legal": "Mentions légales",
+      "Privacidad": "Confidentialité",
+      "Cookies": "Cookies",
+      "Información legal": "Informations légales",
+      "Reparación de electrodomésticos": "Réparation d’électroménagers",
+      "Política de Privacidad": "Politique de confidentialité",
+      "He leído la": "J’ai lu la",
+      "y entiendo el tratamiento de mis datos para atender esta consulta.": "et je comprends le traitement de mes données afin de répondre à cette demande.",
+      "Este formulario no guarda los datos en la web: prepara el mensaje y abre WhatsApp para enviarlo a la tienda. No se realiza ningún pago desde esta web.": "Ce formulaire ne conserve pas les données sur le site : il prépare le message et ouvre WhatsApp afin que vous puissiez l’envoyer au magasin. Aucun paiement n’est effectué sur ce site.",
       "Servicios": "Services",
       "Reparaciones": "Réparations",
       "Servicios para tu hogar": "Services pour votre maison",
@@ -438,6 +456,15 @@
       "Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta.": "Bonjour, j’ai consulté le site d’Ocasiones Calpe et je souhaiterais faire une demande."
     },
     de: {
+      "Aviso legal": "Impressum",
+      "Privacidad": "Datenschutz",
+      "Cookies": "Cookies",
+      "Información legal": "Rechtliche Informationen",
+      "Reparación de electrodomésticos": "Reparatur von Elektrogeräten",
+      "Política de Privacidad": "Datenschutzerklärung",
+      "He leído la": "Ich habe die",
+      "y entiendo el tratamiento de mis datos para atender esta consulta.": "gelesen und verstanden, wie meine Daten zur Bearbeitung dieser Anfrage verarbeitet werden.",
+      "Este formulario no guarda los datos en la web: prepara el mensaje y abre WhatsApp para enviarlo a la tienda. No se realiza ningún pago desde esta web.": "Dieses Formular speichert die Daten nicht auf der Website: Es erstellt die Nachricht und öffnet WhatsApp, damit Sie sie an das Geschäft senden können. Über diese Website werden keine Zahlungen abgewickelt.",
       "Servicios": "Service",
       "Reparaciones": "Reparaturen",
       "Servicios para tu hogar": "Services für Ihr Zuhause",
@@ -855,6 +882,24 @@
   };
 
   const pageMeta = {
+    aviso_legal: {
+      es: ["Aviso legal | Ocasiones Calpe", "Información legal y datos identificativos del titular de ocasionescalpe.com."],
+      en: ["Legal notice | Ocasiones Calpe", "Legal information and identification details for the owner of ocasionescalpe.com."],
+      fr: ["Mentions légales | Ocasiones Calpe", "Informations légales et identification du titulaire de occasionscalpe.com."],
+      de: ["Impressum | Ocasiones Calpe", "Rechtliche Informationen und Angaben zum Betreiber von ocasionescalpe.com."]
+    },
+    privacidad: {
+      es: ["Política de privacidad | Ocasiones Calpe", "Información sobre el tratamiento de datos personales por OCASIONES CALPE C.B."],
+      en: ["Privacy policy | Ocasiones Calpe", "Information about the processing of personal data by OCASIONES CALPE C.B."],
+      fr: ["Politique de confidentialité | Ocasiones Calpe", "Informations sur le traitement des données personnelles par OCASIONES CALPE C.B."],
+      de: ["Datenschutzerklärung | Ocasiones Calpe", "Informationen zur Verarbeitung personenbezogener Daten durch OCASIONES CALPE C.B."]
+    },
+    cookies: {
+      es: ["Política de cookies | Ocasiones Calpe", "Información sobre cookies y almacenamiento local utilizado en ocasionescalpe.com."],
+      en: ["Cookie policy | Ocasiones Calpe", "Information about cookies and local storage used on ocasionescalpe.com."],
+      fr: ["Politique de cookies | Ocasiones Calpe", "Informations sur les cookies et le stockage local utilisés sur ocasionescalpe.com."],
+      de: ["Cookie-Richtlinie | Ocasiones Calpe", "Informationen zu Cookies und lokalem Speicher auf ocasionescalpe.com."]
+    },
     inicio: {
       es: ["Ocasiones Calpe | Muebles, electrodomésticos y descanso", "Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar en Calpe. Catálogo, montaje y reparación de electrodomésticos."],
       en: ["Ocasiones Calpe | Furniture, appliances and bedding", "Ocasiones Calpe in Calpe: furniture, appliances, mattresses and home items, plus assembly and appliance repair services."],
