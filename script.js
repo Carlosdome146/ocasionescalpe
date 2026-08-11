@@ -262,7 +262,7 @@ function setupWhatsAppLinks() {
   document.querySelectorAll(".js-whatsapp").forEach(link => {
     link.addEventListener("click", event => {
       event.preventDefault();
-      const spanishMessage = link.dataset.message || "Buenas, me gustaría hacer una consulta.";
+      const spanishMessage = link.dataset.message || "Hola, me gustaría hacer una consulta.";
       const message = I18N.t(spanishMessage) !== spanishMessage ? I18N.t(spanishMessage) : (spanishMessage === "Hola, me gustaría hacer una consulta." ? I18N.m("genericWhatsapp") : spanishMessage);
       window.open(whatsappUrl(message), "_blank", "noopener");
     });

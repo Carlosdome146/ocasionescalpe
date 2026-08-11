@@ -389,7 +389,7 @@ h2 { margin: 0; font-size: clamp(36px, 4vw, 55px); line-height: 1.02; }
 
 /* Selector de idioma */
 .language-switcher { display: inline-flex; align-items: center; gap: 0; border: 2px solid var(--black); background: var(--white); box-shadow: 3px 3px 0 rgba(0,0,0,.14); }
-.language-btn { min-width: 31px; height: 30px; padding: 0 7px; border: 0; border-right: 1px solid var(--black); background: var(--white); color: var(--black); font-size: 10px; font-weight: 900; line-height: 1; letter-spacing: .04em; transition: background .16s ease, color .16s ease; }
+.language-btn { min-width: 31px; height: 30px; padding: 0 7px; border: 0; border-right: 1px solid var(--yellow); background: var(--white); color: var(--black); font-size: 10px; font-weight: 900; line-height: 1; letter-spacing: .04em; transition: background .16s ease, color .16s ease; }
 .language-btn:last-child { border-right: 0; }
 .language-btn:hover, .language-btn:focus-visible { background: var(--yellow); outline: none; }
 .language-btn.active { background: var(--black); color: var(--yellow); }

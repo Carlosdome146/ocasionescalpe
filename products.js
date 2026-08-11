@@ -55,7 +55,7 @@ window.OC_PRODUCTS = [
         "price": "Auf Anfrage",
         "condition": "Guter Zustand",
         "mountingLabel": "Montage optional",
-        "description": "Großzügiges Sofa, ideal für Familienwohnzimmer und Ruhebereiche. DEMO-Gebrauchtstück aus der Ausstellung.",
+        "description": "Großzügiges Sofa, ideal für Familienwohnzimmer und Ruhebereiche. Gebrauchtstück aus der Ausstellung.",
         "details": {
           "Maße": "Auf Anfrage",
           "Farbe": "Neutralgrau",

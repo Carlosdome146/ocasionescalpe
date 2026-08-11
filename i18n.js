@@ -91,7 +91,7 @@
       "Productos relacionados": "Related products",
       "Volver al catálogo →": "Back to catalogue →",
       "Tu compra, preparada para usar.": "Your purchase, ready to use.",
-      "Las condiciones del montaje dependen de cada producto y se confirman antes de cerrar la compra.": "Assembly conditions depend on each product and are confirmed before the purchase is finalised.",
+      "Las condiciones de montaje dependen de cada producto y se confirman antes de cerrar la compra.": "Assembly conditions depend on each product and are confirmed before the purchase is finalised.",
       "FÁCIL": "EASY",
       "Y CLARO": "AND CLEAR",
       "Servicio flexible": "Flexible service",
