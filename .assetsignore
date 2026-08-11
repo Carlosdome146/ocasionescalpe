@@ -1,0 +1,13 @@
+# Backend/configuration files that must not be uploaded as static assets
+worker.js
+wrangler.jsonc
+.assetsignore
+
+# Git/tooling
+.git
+.git/**
+.github
+.github/**
+node_modules
+node_modules/**
+package-lock.json
