@@ -1,196 +1,148 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Panel de control | Ocasiones Calpe</title>
-  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Ocasiones Calpe: muebles, electrodomésticos, colchones y artículos para el hogar en Calpe. Consulta el catálogo y las opciones de montaje." name="description"/>
+<meta content="#ffe500" name="theme-color"/>
+<title>Ocasiones Calpe | Muebles, electrodomésticos y descanso</title>
+<link href="styles.css" rel="stylesheet"/>
+<link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Ocasiones Calpe",
+    "description": "Compra y venta de muebles, electrodomésticos, colchones y artículos para el hogar.",
+    "telephone": "+34609377974",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Avenida Valencia, 3",
+      "postalCode": "03710",
+      "addressLocality": "Calpe",
+      "addressRegion": "Alicante",
+      "addressCountry": "ES"
+    },
+    "sameAs": ["https://www.facebook.com/ocasionescalpe/?locale=es_ES", "https://www.instagram.com/ocasionescalpe/"]
+  }
+  </script>
 </head>
-<body>
-  <main id="login-view" class="login-shell">
-    <section class="login-card">
-      <img src="../assets/logo-ocasiones-calpe.jpg" alt="Ocasiones Calpe" class="login-logo">
-      <p class="admin-kicker">OCASIONES CALPE</p>
-      <h1>Panel de control</h1>
-      <p class="login-copy">Gestión de productos, stock e imágenes.</p>
-      <form id="login-form" class="admin-form">
-        <label>Email<input id="login-email" type="email" autocomplete="username" required></label>
-        <label>Contraseña<input id="login-password" type="password" autocomplete="current-password" required></label>
-        <button type="submit" class="admin-btn admin-btn--primary">Entrar</button>
-        <p id="login-error" class="form-error" hidden></p>
-      </form>
-    </section>
-  </main>
-
-  <div id="dashboard-view" class="dashboard" hidden>
-    <header class="admin-header">
-      <a href="/" class="admin-brand" target="_blank" rel="noopener">
-        <img src="../assets/logo-ocasiones-calpe.jpg" alt="">
-        <span><strong>OCASIONES CALPE</strong><small>Panel de control</small></span>
-      </a>
-      <div class="admin-header__actions">
-        <a href="/" class="admin-btn admin-btn--ghost" target="_blank" rel="noopener">Ver web</a>
-        <button id="logout-btn" class="admin-btn admin-btn--dark" type="button">Cerrar sesión</button>
-      </div>
-    </header>
-
-    <div class="admin-container">
-      <section class="admin-title">
-        <div><span class="admin-kicker">GESTIÓN DE CATÁLOGO</span><h1>Stock de la tienda</h1></div>
-        <div class="admin-title__actions">
-          <button class="admin-btn admin-btn--dark js-new" data-type="segunda_mano">+ Segunda mano</button>
-          <button class="admin-btn admin-btn--primary js-new" data-type="nuevo">+ Producto nuevo</button>
-        </div>
-      </section>
-
-      <section class="kpi-grid">
-        <article><span>Segunda mano</span><strong id="kpi-second">0</strong><small>disponibles / reservados</small></article>
-        <article><span>Productos nuevos</span><strong id="kpi-new">0</strong><small>referencias activas</small></article>
-        <article><span>Unidades en tienda</span><strong id="kpi-units">0</strong><small>stock físico de nuevos</small></article>
-        <article><span>Vendidos</span><strong id="kpi-sold">0</strong><small>histórico marcado</small></article>
-      </section>
-
-      <section class="catalog-admin">
-        <div class="admin-tabs" role="tablist">
-          <button class="admin-tab active" data-tab="segunda_mano">Segunda mano</button>
-          <button class="admin-tab" data-tab="nuevo">Productos nuevos</button>
-        </div>
-
-        <div class="admin-toolbar">
-          <input id="admin-search" type="search" placeholder="Buscar por nombre o referencia…">
-          <select id="admin-category">
-            <option value="">Todas las categorías</option>
-            <option value="muebles">Muebles</option>
-            <option value="electrodomesticos">Electrodomésticos</option>
-            <option value="descanso">Descanso</option>
-            <option value="jardin">Jardín</option>
-          </select>
-          <button id="refresh-btn" class="admin-btn admin-btn--ghost" type="button">Actualizar</button>
-        </div>
-
-        <div class="table-wrap">
-          <table class="products-table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th id="stock-header">Estado</th>
-                <th>Publicación</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="products-body"></tbody>
-          </table>
-          <div id="admin-empty" class="admin-empty" hidden>No hay productos en esta sección.</div>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <dialog id="product-dialog" class="product-dialog">
-    <form id="product-form" class="product-modal">
-      <div class="modal-header">
-        <div><span id="modal-kicker" class="admin-kicker">PRODUCTO</span><h2 id="modal-title">Nuevo producto</h2></div>
-        <button id="close-modal" class="icon-btn" type="button" aria-label="Cerrar">×</button>
-      </div>
-
-      <input id="product-id" type="hidden">
-
-      <div class="form-grid">
-        <label>Referencia *<input id="reference" required maxlength="50" placeholder="OC-SM-001"></label>
-        <label>Tipo
-          <select id="product-type">
-            <option value="segunda_mano">Segunda mano</option>
-            <option value="nuevo">Producto nuevo</option>
-          </select>
-        </label>
-        <label class="span-2">Nombre *<input id="name" required maxlength="180"></label>
-        <label>Categoría
-          <select id="category">
-            <option value="muebles">Muebles</option>
-            <option value="electrodomesticos">Electrodomésticos</option>
-            <option value="descanso">Descanso</option>
-            <option value="jardin">Jardín</option>
-          </select>
-        </label>
-        <label>Estado
-          <select id="status">
-            <option value="disponible">Disponible</option>
-            <option value="reservado">Reservado</option>
-            <option value="vendido">Vendido</option>
-            <option value="oculto">Oculto</option>
-          </select>
-        </label>
-        <label>Marca<input id="brand"></label>
-        <label>Modelo<input id="model"></label>
-        <label>Estado / condición<input id="condition-text" placeholder="Buen estado / Producto nuevo"></label>
-        <label>Medidas<input id="dimensions" placeholder="200 × 90 × 85 cm"></label>
-        <label>Precio (€)<input id="price" type="number" min="0" step="0.01" placeholder="299.00"></label>
-        <label class="check-label"><input id="price-on-request" type="checkbox"> Precio a consultar</label>
-
-        <div id="new-stock-fields" class="stock-box span-2" hidden>
-          <div>
-            <label>Unidades físicas en tienda<input id="store-stock" type="number" min="0" step="1" value="0"></label>
-          </div>
-          <div>
-            <label>Reposición del proveedor
-              <select id="lead-days">
-                <option value="1">Aprox. 1 día</option>
-                <option value="7">Aprox. 1 semana</option>
-              </select>
-            </label>
-          </div>
-          <p>Los productos nuevos siguen disponibles aunque el stock físico llegue a 0.</p>
-        </div>
-
-        <label>Montaje
-          <select id="mounting">
-            <option value="consultar">Consultar</option>
-            <option value="incluido">Incluido</option>
-            <option value="opcional">Opcional</option>
-            <option value="no_requiere">No requiere</option>
-          </select>
-        </label>
-        <label>Transporte
-          <select id="transport">
-            <option value="consultar">Consultar</option>
-            <option value="incluido">Incluido</option>
-            <option value="opcional">Opcional</option>
-            <option value="no_disponible">No disponible</option>
-          </select>
-        </label>
-
-        <label class="span-2">Descripción<textarea id="description" rows="5"></textarea></label>
-        <label class="check-label"><input id="published" type="checkbox" checked> Publicado en la web</label>
-        <label class="check-label"><input id="featured" type="checkbox"> Destacado en Inicio</label>
-      </div>
-
-      <section id="images-section" class="images-section" hidden>
-        <div class="section-row"><div><span class="admin-kicker">FOTOGRAFÍAS</span><h3>Imágenes del producto</h3></div><span class="image-help">WebP recomendado</span></div>
-        <div id="image-list" class="image-grid"></div>
-        <label class="upload-zone">
-          <input id="image-input" type="file" accept="image/webp,image/jpeg,image/png" multiple>
-          <strong>Seleccionar fotografías</strong>
-          <span>Hasta 12 por subida · máximo 8 MB cada una</span>
-        </label>
-        <button id="upload-images" class="admin-btn admin-btn--ghost" type="button">Subir imágenes</button>
-      </section>
-
-      <p id="form-error" class="form-error" hidden></p>
-      <div class="modal-footer">
-        <button id="delete-product" class="admin-btn admin-btn--danger" type="button" hidden>Eliminar definitivamente</button>
-        <div class="modal-footer__right">
-          <button id="cancel-modal" class="admin-btn admin-btn--ghost" type="button">Cancelar</button>
-          <button class="admin-btn admin-btn--primary" type="submit">Guardar producto</button>
-        </div>
-      </div>
-    </form>
-  </dialog>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="admin.js"></script>
+<body data-page="inicio">
+<div class="announcement">
+<div class="container announcement__inner">
+<span>Stock en constante renovación</span>
+<span class="announcement__dot">•</span>
+<span>Consulta disponibilidad antes de desplazarte</span>
+</div>
+</div>
+<header class="site-header">
+<div class="container nav-wrap">
+<a aria-label="Ir al inicio de Ocasiones Calpe" class="brand" href="index.html">
+<img alt="Logo de Ocasiones Calpe" class="brand__logo" src="assets/logo-ocasiones-calpe.jpg"/>
+<span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+</a>
+<button aria-controls="main-menu" aria-expanded="false" aria-label="Abrir menú" class="nav-toggle"><span></span><span></span><span></span></button>
+<nav aria-label="Navegación principal" class="main-nav" id="main-menu"><a aria-current="page" class="active" href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">Nosotros</a><div aria-label="Idioma / Language" class="language-switcher" role="group">
+<button aria-label="Español" aria-pressed="true" class="language-btn active" data-language="es" type="button">ES</button>
+<button aria-label="English" aria-pressed="false" class="language-btn" data-language="en" type="button">EN</button>
+<button aria-label="Français" aria-pressed="false" class="language-btn" data-language="fr" type="button">FR</button>
+<button aria-label="Deutsch" aria-pressed="false" class="language-btn" data-language="de" type="button">AL</button>
+</div><a class="nav-cta" href="contacto.html">Contactar</a></nav>
+</div>
+</header>
+<main>
+<section class="hero">
+<div class="container hero__grid">
+<div class="hero__content reveal">
+<span class="eyebrow">Muebles · Electrodomésticos · Descanso</span>
+<h1>Grandes oportunidades para renovar tu hogar.</h1>
+<p>Descubre muebles, electrodomésticos, colchones y artículos para casa, con atención cercana y opciones de montaje según cada producto.</p>
+<div class="hero__actions">
+<a class="btn btn--primary" href="catalogo.html">Ver catálogo</a>
+<a class="btn btn--ghost js-whatsapp" data-message="Hola, me gustaría consultar los productos disponibles en Ocasiones Calpe." href="#">Consultar por WhatsApp</a>
+</div>
+<div class="hero__trust">
+<div><strong>Stock único</strong><span>Piezas y oportunidades que cambian</span></div>
+<div><strong>Atención directa</strong><span>Resolvemos tus dudas rápidamente</span></div>
+<div><strong>Montaje flexible</strong><span>Incluido u opcional según producto</span></div>
+</div>
+</div>
+<div class="hero__visual reveal reveal--delay">
+<img alt="Fachada de la tienda Ocasiones Calpe" src="assets/fachada-ocasiones-calpe.png"/>
+<div class="floating-card floating-card--top"><span class="floating-card__icon">✓</span><div><strong>Atención personal</strong><small>Consulta el estado de cada artículo</small></div></div>
+<div class="floating-card floating-card--bottom"><span class="floating-card__icon">↗</span><div><strong>Nuevas entradas</strong><small>Catálogo en actualización continua</small></div></div>
+</div>
+</div>
+</section>
+<section aria-label="Ventajas de Ocasiones Calpe" class="benefits">
+<div class="container benefits__grid">
+<article><span>01</span><div><h3>Precios de oportunidad</h3><p>Alternativas para equipar tu casa sin pagar de más.</p></div></article>
+<article><span>02</span><div><h3>Variedad real</h3><p>Muebles, descanso, electrodomésticos y mucho más.</p></div></article>
+<article><span>03</span><div><h3>Servicio personalizado</h3><p>Te ayudamos a encontrar la opción que encaja contigo.</p></div></article>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-heading reveal"><div><span class="eyebrow">Todo para tu hogar</span><h2>Compra por categoría</h2></div><p>Entra directamente en la categoría que te interesa dentro del catálogo.</p></div>
+<div class="category-grid">
+<a class="category-card reveal" href="catalogo.html?categoria=muebles"><img alt="Ilustración de un sofá" src="assets/category-furniture.svg"/><div><span>Muebles</span><small>Sofás, mesas, sillas, armarios y más</small></div><b>→</b></a>
+<a class="category-card reveal" href="catalogo.html?categoria=electrodomesticos"><img alt="Ilustración de electrodomésticos" src="assets/category-appliances.svg"/><div><span>Electrodomésticos</span><small>Lavado, frío, cocina y pequeños aparatos</small></div><b>→</b></a>
+<a class="category-card reveal" href="catalogo.html?categoria=descanso"><img alt="Ilustración de una cama y colchón" src="assets/category-rest.svg"/><div><span>Descanso</span><small>Colchones, camas, somieres y canapés</small></div><b>→</b></a>
+<a class="category-card reveal" href="catalogo.html?categoria=jardin"><img alt="Ilustración de mobiliario de jardín" src="assets/category-garden.svg"/><div><span>Jardín y terraza</span><small>Mesas, sillas y mobiliario exterior</small></div><b>→</b></a>
+</div>
+</div>
+</section>
+<section class="section section--soft">
+<div class="container">
+<div class="section-heading reveal"><div><span class="eyebrow">Selección destacada</span><h2>Últimas oportunidades</h2></div><a class="text-link" href="catalogo.html">Ver catálogo completo →</a></div>
+<div class="catalog-grid i18n-dynamic" id="featured-grid"></div>
+</div>
+</section>
+<section class="section split-feature">
+<div class="container split-feature__grid">
+<div class="split-feature__visual reveal"><img alt="Servicio de montaje de muebles" src="assets/mounting-service.svg"/></div>
+<div class="split-feature__copy reveal reveal--delay"><span class="eyebrow">Servicio de montaje</span><h2>Del catálogo a tu casa, listo para disfrutar.</h2><p>El montaje puede estar incluido en el precio del producto o contratarse de forma adicional. Siempre se indicará antes de confirmar la compra.</p><a class="btn btn--dark" href="montaje.html">Conocer el servicio</a></div>
+</div>
+</section>
+<section class="section section--black">
+<div class="container store-teaser">
+<div class="reveal"><span class="eyebrow eyebrow--light">Nosotros</span><h2>Una forma directa y cercana de comprar.</h2><p>Visita el establecimiento en Calpe, consulta las novedades en Facebook o pregunta por WhatsApp antes de desplazarte.</p><div class="hero__actions"><a class="btn btn--light" href="tienda.html">Conocer Ocasiones Calpe</a><a class="btn btn--outline-light" href="contacto.html">Cómo llegar</a></div></div>
+<div class="store-teaser__number reveal reveal--delay"><strong>03710</strong><span>CALPE · ALICANTE</span></div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container footer-grid">
+<div>
+<a class="brand brand--footer" href="index.html">
+<img alt="Logo de Ocasiones Calpe" class="brand__logo" src="assets/logo-ocasiones-calpe.jpg"/>
+<span class="brand__text"><strong>OCASIONES CALPE</strong><small>COMPRA · VENTA</small></span>
+</a>
+<p>Muebles, electrodomésticos, descanso y oportunidades para tu hogar.</p>
+</div>
+<div><strong>Explorar</strong><a href="catalogo.html">Catálogo</a><a href="montaje.html">Montaje</a><a href="tienda.html">Nosotros</a></div>
+<div><strong>Contacto</strong><a href="tel:+34609377974">609 377 974</a><a href="contacto.html">Formulario de contacto</a><a href="https://www.facebook.com/ocasionescalpe/?locale=es_ES" rel="noopener noreferrer" target="_blank">Facebook</a></div>
+<div><strong>Ubicación</strong><span>Av. Valencia, 3</span><span>03710 Calpe, Alicante</span></div>
+</div>
+<div aria-label="Redes sociales de Ocasiones Calpe" class="container footer-social">
+<span class="footer-social__label">Síguenos y escríbenos</span>
+<div class="footer-social__links">
+<a aria-label="Ocasiones Calpe en Facebook" class="social-link" href="https://www.facebook.com/ocasionescalpe/?locale=es_ES" rel="noopener noreferrer" target="_blank" title="Facebook">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M13.8 22v-9h3l.45-3.5H13.8V7.26c0-1.01.28-1.7 1.73-1.7H17.4V2.43c-.32-.04-1.43-.13-2.72-.13-2.69 0-4.53 1.64-4.53 4.65V9.5H7.1V13h3.05v9h3.65Z"></path></svg>
+</a>
+<a aria-label="Contactar con Ocasiones Calpe por WhatsApp" class="social-link" href="https://wa.me/34609377974?text=Hola%2C%20vengo%20desde%20la%20web%20de%20Ocasiones%20Calpe." rel="noopener noreferrer" target="_blank" title="WhatsApp">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12.04 2a9.84 9.84 0 0 0-8.4 14.96L2 22l5.19-1.62A9.9 9.9 0 1 0 12.04 2Zm0 17.99a8.06 8.06 0 0 1-4.11-1.13l-.3-.18-3.08.96.99-3-.2-.31a8.04 8.04 0 1 1 6.7 3.66Zm4.42-6.03c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19-.71-.64-1.19-1.42-1.33-1.66-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.59 4.12 3.63.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.43-.59 1.63-1.15.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"></path></svg>
+</a>
+<a aria-label="Ocasiones Calpe en Instagram" class="social-link" href="https://www.instagram.com/ocasionescalpe/" rel="noopener noreferrer" target="_blank" title="Instagram">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm-.18 1.8A3.22 3.22 0 0 0 3.8 7.02v9.96a3.22 3.22 0 0 0 3.22 3.22h9.96a3.22 3.22 0 0 0 3.22-3.22V7.02a3.22 3.22 0 0 0-3.22-3.22H7.02Zm10.53 1.35a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 6.87A5.13 5.13 0 1 1 6.87 12 5.13 5.13 0 0 1 12 6.87Zm0 1.8A3.33 3.33 0 1 0 15.33 12 3.33 3.33 0 0 0 12 8.67Z"></path></svg>
+</a>
+</div>
+</div>
+<div class="container footer-bottom"><span>© <span id="year"></span> Ocasiones Calpe</span><span>Diseño web a medida</span></div>
+</footer>
+<a aria-label="Contactar por WhatsApp" class="whatsapp-float js-whatsapp" data-message="Hola, he visto la web de Ocasiones Calpe y me gustaría hacer una consulta." href="#"><span>WhatsApp</span></a>
+<script src="i18n.js"></script><script src="products.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
