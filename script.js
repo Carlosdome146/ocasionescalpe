@@ -251,10 +251,42 @@ function setupProductDetail() {
       ? `<span class="stock-number">${Number(baseProduct.stock) > 0 ? Number(baseProduct.stock) : "0"}</span>`
       : `<span class="stock-unique">1</span>`;
 
+    const galleryImages = Array.isArray(baseProduct.images) && baseProduct.images.length
+      ? baseProduct.images
+      : [{ url: baseProduct.image, alt: product.name, cover: true }];
+
+    const initialImageIndex = Math.max(
+      0,
+      galleryImages.findIndex(image => image.cover)
+    );
+    const initialImage = galleryImages[initialImageIndex] || galleryImages[0];
+
+    const galleryThumbnails = galleryImages.length > 1
+      ? `<div class="product-gallery__thumbs" role="list" aria-label="Fotografías de ${product.name}">
+          ${galleryImages.map((image, index) => `
+            <button
+              class="product-gallery__thumb ${index === initialImageIndex ? "active" : ""}"
+              type="button"
+              role="listitem"
+              data-gallery-index="${index}"
+              data-gallery-src="${image.url}"
+              data-gallery-alt="${(image.alt || product.name).replace(/"/g, "&quot;")}"
+              aria-label="Ver foto ${index + 1} de ${galleryImages.length}"
+              aria-pressed="${index === initialImageIndex ? "true" : "false"}">
+              <img src="${image.url}" alt="" loading="lazy" />
+            </button>
+          `).join("")}
+        </div>`
+      : "";
+
     target.innerHTML = `
-      <div class="product-detail__image">
-        <img src="${baseProduct.image}" alt="${product.name}" />
-        <span class="product-detail__type product-type ${typeClass(baseProduct)}">${product.typeLabel}</span>
+      <div class="product-detail__gallery">
+        <div class="product-detail__image">
+          <img id="product-main-image" src="${initialImage.url}" alt="${initialImage.alt || product.name}" />
+          <span class="product-detail__type product-type ${typeClass(baseProduct)}">${product.typeLabel}</span>
+          ${galleryImages.length > 1 ? `<span id="product-gallery-count" class="product-gallery__count">${initialImageIndex + 1} / ${galleryImages.length}</span>` : ""}
+        </div>
+        ${galleryThumbnails}
       </div>
       <div class="product-detail__content">
         <div class="product-detail__labels"><span class="eyebrow">${product.categoryLabel}</span><span class="product-reference">Ref. ${baseProduct.reference || `OC-${baseProduct.id}`}</span></div>
@@ -270,6 +302,28 @@ function setupProductDetail() {
         <div class="product-detail__notice">${I18N.m("catalogueNotice")}</div>
         <div class="hero__actions"><a class="btn btn--primary" href="${whatsappUrl(productWhatsappMessage(baseProduct))}" target="_blank" rel="noopener noreferrer">${I18N.m("askWhatsapp")}</a><a class="btn btn--ghost" href="catalogo.html?tipo=${baseProduct.type}&categoria=${baseProduct.category}">${I18N.m("viewSimilar")}</a></div>
       </div>`;
+
+    const mainImage = target.querySelector("#product-main-image");
+    const galleryCount = target.querySelector("#product-gallery-count");
+    const galleryButtons = [...target.querySelectorAll(".product-gallery__thumb")];
+
+    galleryButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.galleryIndex) || 0;
+        if (mainImage) {
+          mainImage.src = button.dataset.gallerySrc;
+          mainImage.alt = button.dataset.galleryAlt || product.name;
+        }
+        if (galleryCount) {
+          galleryCount.textContent = `${index + 1} / ${galleryImages.length}`;
+        }
+        galleryButtons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      });
+    });
 
     const visible = products.filter(item => item.id !== baseProduct.id && isVisibleProduct(item));
     const related = [
