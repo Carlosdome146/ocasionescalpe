@@ -418,7 +418,139 @@ async function loadProductsFromApi() {
   }
 }
 
+
+const OC_COOKIE_CONSENT_KEY = "ocasiones-calpe-cookie-choice";
+
+const OC_COOKIE_TEXTS = {
+  es: {
+    title: "COOKIES",
+    text: "Guardamos tu elección. Actualmente usamos únicamente tecnologías técnicas y funcionales necesarias para la web y para recordar el idioma. No utilizamos cookies publicitarias ni de analítica.",
+    policy: "Política de cookies",
+    reject: "RECHAZAR",
+    accept: "ACEPTAR"
+  },
+  en: {
+    title: "COOKIES",
+    text: "We save your choice. We currently use only technical and functional technologies needed for the website and to remember your language. We do not use advertising or analytics cookies.",
+    policy: "Cookie policy",
+    reject: "REJECT",
+    accept: "ACCEPT"
+  },
+  fr: {
+    title: "COOKIES",
+    text: "Nous enregistrons votre choix. Nous utilisons actuellement uniquement des technologies techniques et fonctionnelles nécessaires au site et à la mémorisation de la langue. Nous n’utilisons pas de cookies publicitaires ni analytiques.",
+    policy: "Politique de cookies",
+    reject: "REFUSER",
+    accept: "ACCEPTER"
+  },
+  de: {
+    title: "COOKIES",
+    text: "Wir speichern Ihre Auswahl. Derzeit verwenden wir nur technisch und funktional notwendige Technologien für die Website und zum Speichern der Sprachauswahl. Wir verwenden keine Werbe- oder Analyse-Cookies.",
+    policy: "Cookie-Richtlinie",
+    reject: "ABLEHNEN",
+    accept: "AKZEPTIEREN"
+  }
+};
+
+function getCookieConsentLanguage() {
+  const language = I18N?.getLanguage?.() || "es";
+  return ["es", "en", "fr", "de"].includes(language) ? language : "es";
+}
+
+function getCookieConsentChoice() {
+  try {
+    return localStorage.getItem(OC_COOKIE_CONSENT_KEY);
+  } catch (_) {
+    return null;
+  }
+}
+
+function setCookieConsentChoice(choice) {
+  try {
+    localStorage.setItem(OC_COOKIE_CONSENT_KEY, choice);
+  } catch (_) {}
+  document.documentElement.dataset.cookieConsent = choice;
+}
+
+function removeCookieBanner() {
+  document.getElementById("oc-cookie-banner")?.remove();
+  document.body.classList.remove("cookie-consent-open");
+}
+
+function renderCookieBanner(force = false) {
+  if (window.location.pathname.startsWith("/admin")) return;
+
+  const currentChoice = getCookieConsentChoice();
+  if (!force && (currentChoice === "accepted" || currentChoice === "rejected")) {
+    document.documentElement.dataset.cookieConsent = currentChoice;
+    removeCookieBanner();
+    return;
+  }
+
+  removeCookieBanner();
+
+  const lang = getCookieConsentLanguage();
+  const copy = OC_COOKIE_TEXTS[lang] || OC_COOKIE_TEXTS.es;
+
+  const banner = document.createElement("section");
+  banner.id = "oc-cookie-banner";
+  banner.className = "cookie-banner";
+  banner.setAttribute("role", "dialog");
+  banner.setAttribute("aria-modal", "true");
+  banner.setAttribute("aria-labelledby", "oc-cookie-title");
+  banner.setAttribute("aria-describedby", "oc-cookie-copy");
+
+  banner.innerHTML = `
+    <div class="cookie-banner__inner">
+      <div class="cookie-banner__content">
+        <strong class="cookie-banner__title" id="oc-cookie-title">${copy.title}</strong>
+        <p id="oc-cookie-copy">${copy.text}</p>
+        <a class="cookie-banner__policy" href="cookies.html">${copy.policy}</a>
+      </div>
+      <div class="cookie-banner__actions">
+        <button class="cookie-banner__button" type="button" data-cookie-choice="rejected">${copy.reject}</button>
+        <button class="cookie-banner__button" type="button" data-cookie-choice="accepted">${copy.accept}</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+  document.body.classList.add("cookie-consent-open");
+
+  banner.querySelectorAll("[data-cookie-choice]").forEach(button => {
+    button.addEventListener("click", () => {
+      setCookieConsentChoice(button.dataset.cookieChoice);
+      removeCookieBanner();
+    });
+  });
+}
+
+function setupCookieConsent() {
+  renderCookieBanner(false);
+
+  document.addEventListener("oc:languagechange", () => {
+    if (document.getElementById("oc-cookie-banner")) {
+      renderCookieBanner(true);
+    }
+  });
+
+  document.addEventListener("click", event => {
+    const manageButton = event.target.closest("[data-cookie-manage]");
+    if (!manageButton) return;
+    event.preventDefault();
+    try { localStorage.removeItem(OC_COOKIE_CONSENT_KEY); } catch (_) {}
+    delete document.documentElement.dataset.cookieConsent;
+    renderCookieBanner(true);
+  });
+
+  window.OC_COOKIE_CONSENT = {
+    open: () => renderCookieBanner(true),
+    getChoice: getCookieConsentChoice
+  };
+}
+
 async function bootstrap() {
+  setupCookieConsent();
   await loadProductsFromApi();
   setupNavigation();
   setupWhatsAppLinks();
