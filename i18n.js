@@ -1034,7 +1034,7 @@
   function updateRepairWhatsapp() {
     document.querySelectorAll("[data-repair-whatsapp]").forEach(link => {
       const source = link.dataset.repairMessage || "Hola, me gustaría consultar una reparación de electrodoméstico con ELECTROSTAR.";
-      link.href = `https://wa.me/34690270313?text=${encodeURIComponent(t(source))}`;
+      link.href = `https://wa.me/34609377974?text=${encodeURIComponent(t(source))}`;
     });
   }
 
