@@ -570,10 +570,12 @@ const OC_COOKIE_TEXTS = {
     settingsIntro: "Puedes decidir si permites las cookies analíticas. Las tecnologías necesarias no pueden desactivarse.",
     necessary: "Cookies necesarias",
     necessaryText: "Permiten el funcionamiento técnico y recordar preferencias básicas.",
+    necessaryStatus: "SIEMPRE ACTIVAS",
     analytics: "Cookies analíticas",
     analyticsText: "Google Analytics nos ayuda a conocer de forma agregada cómo se usa la web.",
     ads: "Cookies publicitarias",
     adsText: "Actualmente no utilizamos cookies publicitarias.",
+    adsStatus: "NO UTILIZADAS",
     save: "GUARDAR PREFERENCIAS"
   },
   en: {
@@ -587,10 +589,12 @@ const OC_COOKIE_TEXTS = {
     settingsIntro: "You can decide whether to allow analytics cookies. Necessary technologies cannot be disabled.",
     necessary: "Necessary cookies",
     necessaryText: "They enable technical operation and basic preferences.",
+    necessaryStatus: "ALWAYS ACTIVE",
     analytics: "Analytics cookies",
     analyticsText: "Google Analytics helps us understand in aggregate how the website is used.",
     ads: "Advertising cookies",
     adsText: "We currently do not use advertising cookies.",
+    adsStatus: "NOT USED",
     save: "SAVE PREFERENCES"
   },
   fr: {
@@ -604,10 +608,12 @@ const OC_COOKIE_TEXTS = {
     settingsIntro: "Vous pouvez décider d’autoriser ou non les cookies analytiques. Les technologies nécessaires ne peuvent pas être désactivées.",
     necessary: "Cookies nécessaires",
     necessaryText: "Ils permettent le fonctionnement technique et les préférences de base.",
+    necessaryStatus: "TOUJOURS ACTIFS",
     analytics: "Cookies analytiques",
     analyticsText: "Google Analytics nous aide à comprendre de manière agrégée l’utilisation du site.",
     ads: "Cookies publicitaires",
     adsText: "Nous n’utilisons actuellement pas de cookies publicitaires.",
+    adsStatus: "NON UTILISÉS",
     save: "ENREGISTRER"
   },
   de: {
@@ -621,10 +627,12 @@ const OC_COOKIE_TEXTS = {
     settingsIntro: "Sie können entscheiden, ob Analyse-Cookies erlaubt werden. Notwendige Technologien können nicht deaktiviert werden.",
     necessary: "Notwendige Cookies",
     necessaryText: "Sie ermöglichen den technischen Betrieb und grundlegende Einstellungen.",
+    necessaryStatus: "IMMER AKTIV",
     analytics: "Analyse-Cookies",
     analyticsText: "Google Analytics hilft uns, die Nutzung der Website aggregiert zu verstehen.",
     ads: "Werbe-Cookies",
     adsText: "Derzeit verwenden wir keine Werbe-Cookies.",
+    adsStatus: "NICHT VERWENDET",
     save: "EINSTELLUNGEN SPEICHERN"
   }
 };
@@ -729,7 +737,7 @@ function renderCookieSettings() {
       <div class="cookie-settings-list">
         <div class="cookie-setting-row">
           <div><strong>${copy.necessary}</strong><p>${copy.necessaryText}</p></div>
-          <span class="cookie-setting-status">SIEMPRE ACTIVAS</span>
+          <span class="cookie-setting-status">${copy.necessaryStatus}</span>
         </div>
 
         <label class="cookie-setting-row cookie-setting-row--toggle">
@@ -742,7 +750,7 @@ function renderCookieSettings() {
 
         <div class="cookie-setting-row">
           <div><strong>${copy.ads}</strong><p>${copy.adsText}</p></div>
-          <span class="cookie-setting-status">NO UTILIZADAS</span>
+          <span class="cookie-setting-status">${copy.adsStatus}</span>
         </div>
       </div>
 
