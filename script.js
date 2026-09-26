@@ -16,6 +16,72 @@ function whatsappUrl(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+
+const GA_MEASUREMENT_ID = "G-SYPYS6ZVHF";
+let gaLoaded = false;
+
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+
+window.gtag("consent", "default", {
+  analytics_storage: "denied",
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied"
+});
+
+function loadGoogleAnalytics() {
+  if (gaLoaded) return;
+  gaLoaded = true;
+
+  const tag = document.createElement("script");
+  tag.async = true;
+  tag.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_MEASUREMENT_ID);
+  document.head.appendChild(tag);
+
+  window.gtag("js", new Date());
+  window.gtag("config", GA_MEASUREMENT_ID, {
+    send_page_view: true,
+    allow_google_signals: false
+  });
+}
+
+function updateGoogleAnalyticsConsent(choice) {
+  const granted = choice === "accepted";
+
+  window.gtag("consent", "update", {
+    analytics_storage: granted ? "granted" : "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied"
+  });
+
+  if (granted) {
+    loadGoogleAnalytics();
+  }
+}
+
+function trackAnalytics(name, params = {}) {
+  if (getCookieConsentChoice?.() !== "accepted") return;
+  loadGoogleAnalytics();
+  window.gtag("event", name, params);
+}
+
+function analyticsProduct(baseProduct) {
+  if (!baseProduct) return null;
+  const product = localized(baseProduct);
+  const item = {
+    item_id: baseProduct.reference || `OC-${baseProduct.id}`,
+    item_name: product.name || baseProduct.name || "Producto",
+    item_category: product.categoryLabel || baseProduct.category || "",
+    item_variant: baseProduct.type === "nuevo" ? "Nuevo" : "Segunda mano"
+  };
+  if (!baseProduct.priceOnRequest && Number.isFinite(Number(baseProduct.priceCents))) {
+    item.price = Number(baseProduct.priceCents) / 100;
+  }
+  return item;
+}
+
 function isVisibleProduct(product) {
   return product.status !== "sold" && product.status !== "hidden";
 }
@@ -346,6 +412,12 @@ function setupWhatsAppLinks() {
       event.preventDefault();
       const spanishMessage = link.dataset.message || "Hola, me gustaría hacer una consulta.";
       const message = I18N.t(spanishMessage) !== spanishMessage ? I18N.t(spanishMessage) : (spanishMessage === "Hola, me gustaría hacer una consulta." ? I18N.m("genericWhatsapp") : spanishMessage);
+      const source = window.location.pathname.includes("montaje") ? "services_whatsapp" : "general_whatsapp";
+      trackAnalytics("click_whatsapp", { link_location: source });
+      trackAnalytics("generate_lead", { lead_source: source });
+      if (source === "services_whatsapp") {
+        trackAnalytics("click_mounting_whatsapp", { page_location: window.location.pathname });
+      }
       window.open(whatsappUrl(message), "_blank", "noopener");
     });
   });
@@ -366,7 +438,72 @@ function setupContactForm() {
       `${I18N.m("contactInterest")}: ${interest}`,
       `${I18N.m("contactMessage")}: ${data.get("message")}`
     ].join("\n");
+    trackAnalytics("click_whatsapp", { link_location: "contact_form" });
+    trackAnalytics("generate_lead", { lead_source: "contact_form" });
     window.open(whatsappUrl(message), "_blank", "noopener");
+  });
+}
+
+function setupAnalyticsTracking() {
+  const path = window.location.pathname;
+
+  if (path.includes("catalogo")) {
+    trackAnalytics("view_item_list", {
+      item_list_id: "catalogo",
+      item_list_name: "Catálogo",
+      items: products.filter(isVisibleProduct).slice(0, 25).map(analyticsProduct).filter(Boolean)
+    });
+  }
+
+  if (path.includes("producto")) {
+    const id = Number(new URLSearchParams(window.location.search).get("id"));
+    const item = analyticsProduct(products.find(product => product.id === id && isVisibleProduct(product)));
+    if (item) {
+      trackAnalytics("view_item", {
+        currency: "EUR",
+        ...(item.price != null ? { value: item.price } : {}),
+        items: [item]
+      });
+    }
+  }
+
+  document.addEventListener("click", event => {
+    const productLink = event.target.closest('.product-card a[href*="producto"]');
+    if (productLink) {
+      try {
+        const url = new URL(productLink.href, window.location.origin);
+        const id = Number(url.searchParams.get("id"));
+        const item = analyticsProduct(products.find(product => product.id === id));
+        if (item) {
+          trackAnalytics("select_item", {
+            item_list_id: path.includes("catalogo") ? "catalogo" : "inicio_destacados",
+            item_list_name: path.includes("catalogo") ? "Catálogo" : "Inicio - destacados",
+            items: [item]
+          });
+        }
+      } catch (_) {}
+    }
+
+    const phoneLink = event.target.closest('a[href^="tel:"]');
+    if (phoneLink) {
+      trackAnalytics("click_phone", { page_location: path });
+      trackAnalytics("generate_lead", { lead_source: "phone" });
+    }
+
+    const directWhatsapp = event.target.closest('a[href*="wa.me/"]');
+    if (directWhatsapp && !directWhatsapp.classList.contains("js-whatsapp")) {
+      let source = "direct_whatsapp";
+      if (directWhatsapp.matches("[data-repair-whatsapp]")) source = "repair_whatsapp";
+      else if (directWhatsapp.closest("#product-detail")) source = "product_whatsapp";
+      else if (path.includes("montaje")) source = "services_whatsapp";
+
+      trackAnalytics("click_whatsapp", { link_location: source });
+      trackAnalytics("generate_lead", { lead_source: source });
+
+      if (source === "repair_whatsapp") {
+        trackAnalytics("click_repair_whatsapp", { page_location: path });
+      }
+    }
   });
 }
 
@@ -424,31 +561,79 @@ const OC_COOKIE_CONSENT_KEY = "ocasiones-calpe-cookie-choice";
 const OC_COOKIE_TEXTS = {
   es: {
     title: "COOKIES",
-    text: "Guardamos tu elección. Actualmente usamos únicamente tecnologías técnicas y funcionales necesarias para la web y para recordar el idioma. No utilizamos cookies publicitarias ni de analítica.",
+    text: "Utilizamos tecnologías necesarias para el funcionamiento de la web. Con tu consentimiento, también usamos Google Analytics para medir de forma agregada cómo se utiliza ocasionescalpe.com. Las cookies analíticas no se activan si las rechazas.",
     policy: "Política de cookies",
     reject: "RECHAZAR",
-    accept: "ACEPTAR"
+    configure: "CONFIGURAR",
+    accept: "ACEPTAR",
+    settingsTitle: "CONFIGURAR COOKIES",
+    settingsIntro: "Puedes decidir si permites las cookies analíticas. Las tecnologías necesarias no pueden desactivarse.",
+    necessary: "Cookies necesarias",
+    necessaryText: "Permiten el funcionamiento técnico y recordar preferencias básicas.",
+    necessaryStatus: "SIEMPRE ACTIVAS",
+    analytics: "Cookies analíticas",
+    analyticsText: "Google Analytics nos ayuda a conocer de forma agregada cómo se usa la web.",
+    ads: "Cookies publicitarias",
+    adsText: "Actualmente no utilizamos cookies publicitarias.",
+    adsStatus: "NO UTILIZADAS",
+    save: "GUARDAR PREFERENCIAS"
   },
   en: {
     title: "COOKIES",
-    text: "We save your choice. We currently use only technical and functional technologies needed for the website and to remember your language. We do not use advertising or analytics cookies.",
+    text: "We use technologies required for the website to work. With your consent, we also use Google Analytics to measure in aggregate how ocasionescalpe.com is used. Analytics cookies are not activated if you reject them.",
     policy: "Cookie policy",
     reject: "REJECT",
-    accept: "ACCEPT"
+    configure: "SETTINGS",
+    accept: "ACCEPT",
+    settingsTitle: "COOKIE SETTINGS",
+    settingsIntro: "You can decide whether to allow analytics cookies. Necessary technologies cannot be disabled.",
+    necessary: "Necessary cookies",
+    necessaryText: "They enable technical operation and basic preferences.",
+    necessaryStatus: "ALWAYS ACTIVE",
+    analytics: "Analytics cookies",
+    analyticsText: "Google Analytics helps us understand in aggregate how the website is used.",
+    ads: "Advertising cookies",
+    adsText: "We currently do not use advertising cookies.",
+    adsStatus: "NOT USED",
+    save: "SAVE PREFERENCES"
   },
   fr: {
     title: "COOKIES",
-    text: "Nous enregistrons votre choix. Nous utilisons actuellement uniquement des technologies techniques et fonctionnelles nécessaires au site et à la mémorisation de la langue. Nous n’utilisons pas de cookies publicitaires ni analytiques.",
+    text: "Nous utilisons des technologies nécessaires au fonctionnement du site. Avec votre consentement, nous utilisons aussi Google Analytics pour mesurer de manière agrégée l’utilisation de ocasionescalpe.com. Les cookies analytiques ne sont pas activés si vous les refusez.",
     policy: "Politique de cookies",
     reject: "REFUSER",
-    accept: "ACCEPTER"
+    configure: "CONFIGURER",
+    accept: "ACCEPTER",
+    settingsTitle: "CONFIGURER LES COOKIES",
+    settingsIntro: "Vous pouvez décider d’autoriser ou non les cookies analytiques. Les technologies nécessaires ne peuvent pas être désactivées.",
+    necessary: "Cookies nécessaires",
+    necessaryText: "Ils permettent le fonctionnement technique et les préférences de base.",
+    necessaryStatus: "TOUJOURS ACTIFS",
+    analytics: "Cookies analytiques",
+    analyticsText: "Google Analytics nous aide à comprendre de manière agrégée l’utilisation du site.",
+    ads: "Cookies publicitaires",
+    adsText: "Nous n’utilisons actuellement pas de cookies publicitaires.",
+    adsStatus: "NON UTILISÉS",
+    save: "ENREGISTRER"
   },
   de: {
     title: "COOKIES",
-    text: "Wir speichern Ihre Auswahl. Derzeit verwenden wir nur technisch und funktional notwendige Technologien für die Website und zum Speichern der Sprachauswahl. Wir verwenden keine Werbe- oder Analyse-Cookies.",
+    text: "Wir verwenden notwendige Technologien für den Betrieb der Website. Mit Ihrer Einwilligung nutzen wir außerdem Google Analytics, um die Nutzung von ocasionescalpe.com aggregiert zu messen. Analyse-Cookies werden nicht aktiviert, wenn Sie sie ablehnen.",
     policy: "Cookie-Richtlinie",
     reject: "ABLEHNEN",
-    accept: "AKZEPTIEREN"
+    configure: "EINSTELLUNGEN",
+    accept: "AKZEPTIEREN",
+    settingsTitle: "COOKIE-EINSTELLUNGEN",
+    settingsIntro: "Sie können entscheiden, ob Analyse-Cookies erlaubt werden. Notwendige Technologien können nicht deaktiviert werden.",
+    necessary: "Notwendige Cookies",
+    necessaryText: "Sie ermöglichen den technischen Betrieb und grundlegende Einstellungen.",
+    necessaryStatus: "IMMER AKTIV",
+    analytics: "Analyse-Cookies",
+    analyticsText: "Google Analytics hilft uns, die Nutzung der Website aggregiert zu verstehen.",
+    ads: "Werbe-Cookies",
+    adsText: "Derzeit verwenden wir keine Werbe-Cookies.",
+    adsStatus: "NICHT VERWENDET",
+    save: "EINSTELLUNGEN SPEICHERN"
   }
 };
 
@@ -470,6 +655,7 @@ function setCookieConsentChoice(choice) {
     localStorage.setItem(OC_COOKIE_CONSENT_KEY, choice);
   } catch (_) {}
   document.documentElement.dataset.cookieConsent = choice;
+  updateGoogleAnalyticsConsent(choice);
 }
 
 function removeCookieBanner() {
@@ -483,6 +669,7 @@ function renderCookieBanner(force = false) {
   const currentChoice = getCookieConsentChoice();
   if (!force && (currentChoice === "accepted" || currentChoice === "rejected")) {
     document.documentElement.dataset.cookieConsent = currentChoice;
+    updateGoogleAnalyticsConsent(currentChoice);
     removeCookieBanner();
     return;
   }
@@ -497,18 +684,17 @@ function renderCookieBanner(force = false) {
   banner.className = "cookie-banner";
   banner.setAttribute("role", "dialog");
   banner.setAttribute("aria-modal", "true");
-  banner.setAttribute("aria-labelledby", "oc-cookie-title");
-  banner.setAttribute("aria-describedby", "oc-cookie-copy");
 
   banner.innerHTML = `
     <div class="cookie-banner__inner">
       <div class="cookie-banner__content">
-        <strong class="cookie-banner__title" id="oc-cookie-title">${copy.title}</strong>
-        <p id="oc-cookie-copy">${copy.text}</p>
+        <strong class="cookie-banner__title">${copy.title}</strong>
+        <p>${copy.text}</p>
         <a class="cookie-banner__policy" href="cookies.html">${copy.policy}</a>
       </div>
-      <div class="cookie-banner__actions">
+      <div class="cookie-banner__actions cookie-banner__actions--three">
         <button class="cookie-banner__button" type="button" data-cookie-choice="rejected">${copy.reject}</button>
+        <button class="cookie-banner__button" type="button" data-cookie-configure>${copy.configure}</button>
         <button class="cookie-banner__button" type="button" data-cookie-choice="accepted">${copy.accept}</button>
       </div>
     </div>
@@ -523,14 +709,83 @@ function renderCookieBanner(force = false) {
       removeCookieBanner();
     });
   });
+
+  banner.querySelector("[data-cookie-configure]")?.addEventListener("click", renderCookieSettings);
+}
+
+function renderCookieSettings() {
+  removeCookieBanner();
+
+  const lang = getCookieConsentLanguage();
+  const copy = OC_COOKIE_TEXTS[lang] || OC_COOKIE_TEXTS.es;
+  const accepted = getCookieConsentChoice() === "accepted";
+
+  const banner = document.createElement("section");
+  banner.id = "oc-cookie-banner";
+  banner.className = "cookie-banner";
+  banner.setAttribute("role", "dialog");
+  banner.setAttribute("aria-modal", "true");
+
+  banner.innerHTML = `
+    <div class="cookie-banner__inner">
+      <div class="cookie-banner__content">
+        <strong class="cookie-banner__title">${copy.settingsTitle}</strong>
+        <p>${copy.settingsIntro}</p>
+        <a class="cookie-banner__policy" href="cookies.html">${copy.policy}</a>
+      </div>
+
+      <div class="cookie-settings-list">
+        <div class="cookie-setting-row">
+          <div><strong>${copy.necessary}</strong><p>${copy.necessaryText}</p></div>
+          <span class="cookie-setting-status">${copy.necessaryStatus}</span>
+        </div>
+
+        <label class="cookie-setting-row cookie-setting-row--toggle">
+          <div><strong>${copy.analytics}</strong><p>${copy.analyticsText}</p></div>
+          <span class="cookie-setting-toggle">
+            <input type="checkbox" data-analytics-toggle ${accepted ? "checked" : ""}>
+            <span aria-hidden="true"></span>
+          </span>
+        </label>
+
+        <div class="cookie-setting-row">
+          <div><strong>${copy.ads}</strong><p>${copy.adsText}</p></div>
+          <span class="cookie-setting-status">${copy.adsStatus}</span>
+        </div>
+      </div>
+
+      <div class="cookie-banner__actions">
+        <button class="cookie-banner__button" type="button" data-cookie-choice="rejected">${copy.reject}</button>
+        <button class="cookie-banner__button" type="button" data-cookie-save>${copy.save}</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+  document.body.classList.add("cookie-consent-open");
+
+  banner.querySelector("[data-cookie-choice]")?.addEventListener("click", () => {
+    setCookieConsentChoice("rejected");
+    removeCookieBanner();
+  });
+
+  banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => {
+    const allowAnalytics = Boolean(banner.querySelector("[data-analytics-toggle]")?.checked);
+    setCookieConsentChoice(allowAnalytics ? "accepted" : "rejected");
+    removeCookieBanner();
+  });
 }
 
 function setupCookieConsent() {
+  const currentChoice = getCookieConsentChoice();
+  if (currentChoice) updateGoogleAnalyticsConsent(currentChoice);
+
   renderCookieBanner(false);
 
   document.addEventListener("oc:languagechange", () => {
     if (document.getElementById("oc-cookie-banner")) {
-      renderCookieBanner(true);
+      const settingsOpen = Boolean(document.querySelector("[data-analytics-toggle]"));
+      settingsOpen ? renderCookieSettings() : renderCookieBanner(true);
     }
   });
 
@@ -538,13 +793,11 @@ function setupCookieConsent() {
     const manageButton = event.target.closest("[data-cookie-manage]");
     if (!manageButton) return;
     event.preventDefault();
-    try { localStorage.removeItem(OC_COOKIE_CONSENT_KEY); } catch (_) {}
-    delete document.documentElement.dataset.cookieConsent;
-    renderCookieBanner(true);
+    renderCookieSettings();
   });
 
   window.OC_COOKIE_CONSENT = {
-    open: () => renderCookieBanner(true),
+    open: renderCookieSettings,
     getChoice: getCookieConsentChoice
   };
 }
@@ -553,6 +806,7 @@ async function bootstrap() {
   setupCookieConsent();
   await loadProductsFromApi();
   setupNavigation();
+  setupAnalyticsTracking();
   setupWhatsAppLinks();
   setupContactForm();
   setupCatalog();
